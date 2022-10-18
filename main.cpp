@@ -22,12 +22,12 @@ class Polynomial
 	{
 		if (listHead->pNext != nullptr)
 		{
-			std::cout  << listHead->number << "^" <<  degree << " + ";
+			std::cout  << listHead->number << "x^" <<  degree << " + ";
 			PrintInternal(listHead->pNext, degree + 1);
 		}
 		else
 		{
-			std::cout  << listHead->number << "^" <<  degree << "";
+			std::cout  << listHead->number << "^" <<  degree << "\n";
 		}
 	}
 
@@ -52,14 +52,124 @@ class Polynomial
 	}
 
  public:
-	void Print_rec()
+
+	int operator[](const int index)
+	{
+		if (index < 0 || index > highestDegree) throw "Invalid index";
+		int counter = 0;
+		Coeff *current = this->odds;
+		while (current != nullptr)
+		{
+			if (counter == index)
+			{
+				return current->number;
+			}
+			current = current->pNext;
+			counter++;
+		}
+		return 0;
+	}
+
+	void multiplicationPolynomial(int factor)
+	{
+		Coeff* tmp = odds;
+		for (int i = 0; i < highestDegree; ++i)
+		{
+			this->setCoeff(i, tmp->number * factor);
+			tmp = tmp->pNext;
+		}
+	}
+
+	void setCoeff(int index, int coeff)
+	{
+		if (index < 0 || index > highestDegree) throw "Invalid index";
+		int counter = 0;
+		Coeff *current = this->odds;
+		while (current != nullptr)
+		{
+			if (counter == index)
+			{
+				current->number = coeff;
+			}
+			current = current->pNext;
+			counter++;
+		}
+	}
+
+	void PrintCoeff()
 	{
 		PrintInternal(odds);
 	}
 
-	void push_back_rec(const int data)
+	void pushBackElem(const int data)
 	{
 		PushBackInternal(odds, data);
+	}
+
+	// 0 0 0 0 0
+	// 3 2 0 0 0 0 0
+	static Polynomial additionPolynomials(Polynomial firstP, Polynomial secondP)
+	{
+		if (firstP.highestDegree > secondP.highestDegree)
+		{
+			Polynomial sum(firstP.highestDegree);
+
+			for (int i = 0; i < secondP.highestDegree; ++i)
+			{
+				sum.setCoeff(i, firstP[i] + secondP[i]);
+			}
+			for (int i = secondP.highestDegree; i < firstP.highestDegree; ++i)
+			{
+				sum.setCoeff(i, firstP[i]);
+			}
+			return sum;
+		}
+		else
+		{
+			Polynomial sum(secondP.highestDegree);
+
+			for (int i = 0; i < firstP.highestDegree; ++i)
+			{
+				sum.setCoeff(i, firstP[i] + secondP[i]);
+			}
+			for (int i = firstP.highestDegree; i < secondP.highestDegree; ++i)
+			{
+				sum.setCoeff(i, secondP[i]);
+			}
+			return sum;
+		}
+	}
+
+	static Polynomial subtractionPolynomials(Polynomial firstP, Polynomial secondP)
+	{
+		if (firstP.highestDegree > secondP.highestDegree)
+		{
+			Polynomial sum(firstP.highestDegree);
+
+			for (int i = 0; i < secondP.highestDegree; ++i)
+			{
+				sum.setCoeff(i, firstP[i] - secondP[i]);
+			}
+			for (int i = secondP.highestDegree; i < firstP.highestDegree; ++i)
+			{
+				sum.setCoeff(i, firstP[i]);
+			}
+			return sum;
+		}
+		else
+		{
+			Polynomial sum(secondP.highestDegree);
+
+			for (int i = 0; i < firstP.highestDegree; ++i)
+			{
+				sum.setCoeff(i, firstP[i] - secondP[i]);
+			}
+			for (int i = firstP.highestDegree; i < secondP.highestDegree; ++i)
+			{
+				sum.setCoeff(i, secondP[i]);
+			}
+			return sum;
+		}
 	}
 
 	Polynomial(int degree=1)
@@ -77,10 +187,25 @@ class Polynomial
 
 int main()
 {
-	Polynomial pln(10);
-	pln.push_back_rec(10);
-	pln.push_back_rec(1);
-	pln.push_back_rec(-20);
-	pln.push_back_rec(120);
-	pln.Print_rec();
+	try
+	{
+		Polynomial first(3);
+		first.setCoeff(0, 3);
+		first.setCoeff(1, 100);
+		first.setCoeff(2, 1);
+		first.PrintCoeff();
+		Polynomial second(3);
+		second.setCoeff(0, 21);
+		second.setCoeff(1, 22);
+		second.setCoeff(2, 255);
+		second.PrintCoeff();
+		Polynomial third = Polynomial::subtractionPolynomials(first, second);
+		third.PrintCoeff();
+		third.multiplicationPolynomial(10);
+		third.PrintCoeff();
+	}
+	catch (const char* e)
+	{
+		std::cout << "\033[31;40m\033[1m" << (e) << "\033[0m\n";
+	}
 }
