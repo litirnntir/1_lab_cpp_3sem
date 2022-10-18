@@ -1,4 +1,5 @@
 #include <iostream>
+#include <math.h>
 
 class Polynomial
 {
@@ -172,6 +173,18 @@ class Polynomial
 		}
 	}
 
+	int valueCalculation(int x)
+	{
+		Coeff* tmp = odds;
+		int sum = 0;
+		for (int i = 0; i < highestDegree; ++i)
+		{
+			sum += pow((odds->number * x), i + 1);
+		}
+
+		return sum;
+	}
+
 	Polynomial(int degree=1)
 	{
 		if (degree < 1) throw "Error";
@@ -190,8 +203,8 @@ int main()
 	try
 	{
 		Polynomial first(3);
-		first.setCoeff(0, 3);
-		first.setCoeff(1, 100);
+		first.setCoeff(0, 1);
+		first.setCoeff(1, 1);
 		first.setCoeff(2, 1);
 		first.PrintCoeff();
 		Polynomial second(3);
@@ -203,6 +216,8 @@ int main()
 		third.PrintCoeff();
 		third.multiplicationPolynomial(10);
 		third.PrintCoeff();
+
+		std::cout << first.valueCalculation(1);
 	}
 	catch (const char* e)
 	{
