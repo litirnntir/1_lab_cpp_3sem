@@ -117,8 +117,6 @@ class Polynomial
 		PushBackInternal(odds, data);
 	}
 
-	// 0 0 0 0 0
-	// 3 2 0 0 0 0 0
 	static Polynomial additionPolynomials(Polynomial firstP, Polynomial secondP)
 	{
 		if (firstP.highestDegree > secondP.highestDegree)
@@ -243,11 +241,10 @@ int main()
 												 "3 - Get coefficient\n"
 												 "4 - Set coefficient\n"
 												 "5 - Polynomial addition and subtraction operators;;\n"
-												 "6 - Multiplication operator that performs scalar product of vectors;\n"
-												 "7 - Operator of multiplication of a polynomial by a scalar\n"
-												 "9 - Calculation of polynomial value at a given value of x.\n"
-												 "10 - Find the integral of a polynomial.\n"
-												 "11 - Exit\n" << "\033[0m\n";
+												 "6 - Operator of multiplication of a polynomial by a scalar\n"
+												 "7 - Calculation of polynomial value at a given value of x.\n"
+												 "8 - Find the integral of a polynomial.\n"
+												 "9 - Exit\n" << "\033[0m\n";
 
 			while (!right_choose)
 			{
@@ -256,16 +253,16 @@ int main()
 				if (isdigit(choose))
 				{
 					int digit = atoi(&choose);
-					if (digit > 3)
+					if (digit > 11)
 					{
-						throw "Incorrect number";
+						std::cout << "Incorrect number";
 					}
 					else
 					{
 						right_choose = true;
 					}
 				}
-				else throw "Enter the number\n";
+				else std::cout << "Enter the number\n";
 			}
 
 			switch (choose)
@@ -372,8 +369,9 @@ int main()
 			}
 			case '5':
 			{
-				int degree;
-				int indexPolynomial;
+				int first;
+				int second;
+				int third;
 				int choose;
 
 				std::cout << "\033[33;40m\033[1m" << "1. adding\n"
@@ -383,36 +381,117 @@ int main()
 
 				if (choose == 1)
 				{
+					std::cout << "\033[33;40m\033[1m" << "First polynomial (1-10):" << "\033[0m\n";
 
+					fflush(stdin);
+					scanf("%d", &first);
+
+					std::cout << "\033[33;40m\033[1m" << "Second polynomial (1-10):" << "\033[0m\n";
+
+					fflush(stdin);
+					scanf("%d", &second);
+
+					std::cout << "\033[33;40m\033[1m" << "Third polynomial (1-10):" << "\033[0m\n";
+
+					fflush(stdin);
+					scanf("%d", &third);
+
+					polynomials[third] = Polynomial::additionPolynomials(polynomials[first], polynomials[second]);
+					polynomials[first].printCoeff();
+					std::cout << "+++++++\n";
+					polynomials[second].printCoeff();
+					std::cout << "=======\n";
+					polynomials[third].printCoeff();
+					break;
 				}
-				if (choose == 2)
+				else if (choose == 2)
 				{
+					std::cout << "\033[33;40m\033[1m" << "First polynomial (1-10):" << "\033[0m\n";
 
+					fflush(stdin);
+					scanf("%d", &first);
+
+					std::cout << "\033[33;40m\033[1m" << "Second polynomial (1-10):" << "\033[0m\n";
+
+					fflush(stdin);
+					scanf("%d", &second);
+
+					std::cout << "\033[33;40m\033[1m" << "Third polynomial (1-10):" << "\033[0m\n";
+
+					fflush(stdin);
+					scanf("%d", &third);
+
+					polynomials[third] = Polynomial::subtractionPolynomials(polynomials[first], polynomials[second]);
+					polynomials[first].printCoeff();
+					std::cout << "--------\n";
+					polynomials[second].printCoeff();
+					std::cout << "=======\n";
+					polynomials[third].printCoeff();
+					break;
 				}
+				else throw "Invalid number";
 			}
 			case '6':
 			{
+				int choose;
+				int factor;
 
+				std::cout << "\033[33;40m\033[1m" << "Polynomial (1-10):" << "\033[0m\n";
+
+				fflush(stdin);
+				scanf("%d", &choose);
+
+				std::cout << "\033[33;40m\033[1m" << "Factor:" << "\033[0m\n";
+
+				fflush(stdin);
+				scanf("%d", &factor);
+
+				polynomials[choose].multiplicationPolynomial(factor);
+				polynomials[choose].printCoeff();
+				break;
 			}
 			case '7':
 			{
+				int choose;
+				int x;
 
+				std::cout << "\033[33;40m\033[1m" << "Polynomial (1-10):" << "\033[0m\n";
+
+				fflush(stdin);
+				scanf("%d", &choose);
+
+				std::cout << "\033[33;40m\033[1m" << "x:" << "\033[0m\n";
+
+				fflush(stdin);
+				scanf("%d", &x);
+
+				std::cout << "Value:" << polynomials[choose].valueCalculation(x) << "\n";
+				break;
 			}
 			case '8':
 			{
+				int first;
+				int second;
 
+				std::cout << "\033[33;40m\033[1m" << "Enter the polynomial from which to take the integral (1-10)"
+						  << "\033[0m\n";
+				fflush(stdin);
+				scanf("%d", &first);
+
+				std::cout << "\033[33;40m\033[1m" << "Enter the polynomial where to write the integral (1-10)"
+						  << "\033[0m\n";
+				fflush(stdin);
+				scanf("%d", &first);
+
+				polynomials[second] = polynomials[first].findIntegral();
+				polynomials[first].printCoeff();
+				polynomials[second].printCoeff();
+				break;
 			}
 			case '9':
 			{
-
-			}
-			case '10':
-			{
-
-			}
-			case '11':
-			{
-
+				exit = true;
+				break;
 			}
 			}
 		}
