@@ -19,16 +19,17 @@ class Polynomial
 	Coeff* odds;
 	int highestDegree;
 
-	void PrintInternal(Coeff* listHead, int degree = 1)
+
+	void PrintInternal(Coeff* listHead, int degree = 0)
 	{
 		if (listHead->pNext != nullptr)
 		{
-			std::cout << "\033[35;40m\033[1m" << listHead->number << "x^" << degree << " + " << "\033[0m";
+			std::cout << "\033[37;40m\033[1m" << listHead->number << "x^" << degree << " + " << "\033[0m";
 			PrintInternal(listHead->pNext, degree + 1);
 		}
 		else
 		{
-			std::cout << "\033[35;40m\033[1m" << listHead->number << "x^" << degree  << "\033[0m\n";
+			std::cout << "\033[37;40m\033[1m" << listHead->number << "x^" << degree << "\033[0m\n";
 		}
 	}
 
@@ -53,6 +54,8 @@ class Polynomial
 	}
 
  public:
+
+	friend std::ostream& operator<<(std::ostream& os, Polynomial& obj);
 
 	int operator[](const int index)
 	{
@@ -98,11 +101,6 @@ class Polynomial
 				counter++;
 			}
 		}
-	}
-
-	void printCoeff()
-	{
-		PrintInternal(odds);
 	}
 
 	void pushBackElem(const int data)
@@ -197,7 +195,6 @@ class Polynomial
 		Coeff* tmp = odds;
 		Coeff* tmpNew = integral.odds->pNext;
 
-
 		for (int i = 1; i < highestDegree + 1; ++i)
 		{
 			tmpNew->number = pow(tmp->number, (i)) / (i + 1);
@@ -219,4 +216,12 @@ class Polynomial
 			this->PushBackInternal(odds, 0);
 		}
 	}
+
+	friend std::ostream& operator<<(std::ostream& os, Polynomial& obj)
+	{
+		obj.PrintInternal(obj.odds);
+		return os;
+	}
 };
+
+

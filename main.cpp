@@ -1,5 +1,4 @@
 #include <iostream>
-#include <math.h>
 #include "Polynomial.cpp"
 
 int main()
@@ -12,10 +11,10 @@ int main()
 
 		while (!exit)
 		{
-			char choose;
+			int choose;
 			bool right_choose = false;
 
-			std::cout << "\033[35;40m\033[1m" << "Menu:\n"
+			std::cout << "\n" << "\033[35;40m\033[1m" << "Menu:\n"
 												 "1 - List of polynomials\n"
 												 "2 - Create polynomial\n"
 												 "3 - Get coefficient\n"
@@ -24,59 +23,58 @@ int main()
 												 "6 - Operator of multiplication of a polynomial by a scalar\n"
 												 "7 - Calculation of polynomial value at a given value of x.\n"
 												 "8 - Find the integral of a polynomial.\n"
-												 "9 - Exit\n" << "\033[0m\n";
+												 "9 - Reset polymonial\n"
+												 "10 - Exit\n"
+												 "Enter a number:" << "\033[0m";
 
 			while (!right_choose)
 			{
 				fflush(stdin);
-				scanf("%c", &choose);
-				if (isdigit(choose))
+				std::cin >> choose;
+				if (choose > 10 || choose < 1)
 				{
-					int digit = atoi(&choose);
-					if (digit > 11)
-					{
-						std::cout << "Incorrect number";
-					}
-					else
-					{
-						right_choose = true;
-					}
+					std::cout << "\033[31;40m\033[1m" << "Incorrect number! Enter a number from 1 to 9: " << "\033[0m";
 				}
-				else std::cout << "Enter the number\n";
+				else
+				{
+					right_choose = true;
+				}
 			}
 
 			switch (choose)
 			{
-			case '1':
+			case 1:
 			{
+				std::cout << "\n" << "\033[33;40m\033[1m" << "List of polynomials:" << "\033[0m\n\n";
 				for (int i = 0; i < SIZE; ++i)
 				{
-					std::cout << "\033[35;40m\033[1m" << i << "." << "\033[0m";
-					polynomials[i].printCoeff();
+					std::cout << "\033[37;40m\033[1m" << i << "." << "\033[0m";
+					std::cout << polynomials[i];
 				}
-				std::cout <<"\n\n";
+				std::cout << "\n\n";
 			}
 				break;
-			case '2':
+			case 2:
 			{
 				int degree;
 				int indexPolynomial;
 				int chooseInput;
 
-				std::cout << "\033[35;40m\033[1m" << "in which cell (1-10) to write?\n" << "\033[0m\n";
+				std::cout << "\033[35;40m\033[1m" << "in which cell (0-9) to write?\n" << "\033[0m\n";
 				fflush(stdin);
-				scanf("%d", &indexPolynomial);
-
-				if (indexPolynomial < 0 || indexPolynomial > 10) throw "Invalid index";
+				std::cin >> indexPolynomial;
+				if (indexPolynomial < 0 || indexPolynomial > 9) throw "Invalid index";
 
 				std::cout << "\033[35;40m\033[1m" << "Enter the maximum degree of the polynomial\n" << "\033[0m\n";
 				fflush(stdin);
-				scanf("%d", &degree);
+				std::cin >> degree;
+				if (degree < 1) throw "Invalid degree";
 
 				std::cout << "\033[35;40m\033[1m" << "1.Manual input\n"
 													 "2. Zero polynomial\n" << "\033[0m\n";
 				fflush(stdin);
-				scanf("%d", &chooseInput);
+				std::cin >> chooseInput;
+				if (chooseInput < 1 || chooseInput > 2) throw "Invalid degree";
 
 				if (chooseInput == 1)
 				{
@@ -84,10 +82,10 @@ int main()
 					polynomials[indexPolynomial] = Polynomial(degree);
 					for (int i = 0; i < degree; ++i)
 					{
-						std::cout << "\033[35;40m\033[1m" << "Enter element with indexPolynomial " << i << ":"
+						std::cout << "\033[35;40m\033[1m" << "Enter element with degree polynomial " << i << ":"
 								  << "\033[0m\n";
 						fflush(stdin);
-						scanf("%d", &element);
+						std::cin >> element;
 						polynomials[indexPolynomial].setCoeff(i, element);
 					}
 				}
@@ -97,58 +95,61 @@ int main()
 				}
 				else throw "Invalid number";
 
-				polynomials[indexPolynomial].printCoeff();
+				std::cout << polynomials[indexPolynomial];
 				break;
 			}
-			case '3':
+			case 3:
 			{
 				int degree;
 				int indexPolynomial;
 
-				std::cout << "\033[35;40m\033[1m" << "in which cell (1-10) to read?\n" << "\033[0m\n";
+				std::cout << "\033[35;40m\033[1m" << "in which cell (0-9) to read?\n" << "\033[0m\n";
 				fflush(stdin);
-				scanf("%d", &indexPolynomial);
+				std::cin >> indexPolynomial;
 
 				if (indexPolynomial < 0 || indexPolynomial > 10) throw "Invalid index";
 
 				std::cout << "\033[35;40m\033[1m" << "Enter the degree at which to read the coefficient\n"
 						  << "\033[0m\n";
 				fflush(stdin);
-				scanf("%d", &degree);
+				std::cin >> degree;
 
-				int coeff = polynomials[indexPolynomial][degree];
+				int coeff = polynomials[indexPolynomial][degree + 1];
 
-				std::cout << "coefficient with degree " << degree << ": " << coeff;
+				std::cout << "\033[37;40m\033[1m" << "coefficient with degree " << degree << ": " << coeff
+						  << "\033[0m\n\n";
 
 			}
 				break;
-			case '4':
+			case 4:
 			{
 				int degree;
 				int indexPolynomial;
 				int coeff;
 
-				std::cout << "\033[35;40\033[1m" << "in which cell (1-10) to write?\n" << "\033[0m\n";
+				std::cout << "\033[35;40m\033[1m" << "In which cell (0-9) to write?\n" << "\033[0m\n";
 				fflush(stdin);
-				scanf("%d", &indexPolynomial);
+				std::cin >> indexPolynomial;
 
 				if (indexPolynomial < 0 || indexPolynomial > 10) throw "Invalid index";
 
 				std::cout << "\033[35;40m\033[1m" << "Enter the degree at which to change the coefficient\n"
 						  << "\033[0m\n";
 				fflush(stdin);
-				scanf("%d", &degree);
+				std::cin >> degree;
+
+				if (degree < 1) throw "Invalid degree";
 
 				std::cout << "\033[35;40m\033[1m" << "Enter the coefficient\n" << "\033[0m\n";
 				fflush(stdin);
-				scanf("%d", &coeff);
+				std::cin >> coeff;
 
 				polynomials[indexPolynomial].setCoeff(degree - 1, coeff);
-				polynomials[indexPolynomial].printCoeff();
+				std::cout << polynomials[indexPolynomial];
 
 				break;
 			}
-			case '5':
+			case 5:
 			{
 				int first;
 				int second;
@@ -158,118 +159,149 @@ int main()
 				std::cout << "\033[35;40m\033[1m" << "1. adding\n"
 													 "2. subtraction\n" << "\033[0m\n";
 				fflush(stdin);
-				scanf("%d", &choose);
+				std::cin >> choose;
+				if (choose < 1 || choose > 2) throw "Invalid number";
 
 				if (choose == 1)
 				{
-					std::cout << "\033[35;40m\033[1m" << "First polynomial (1-10):" << "\033[0m\n";
+					std::cout << "\033[35;40m\033[1m" << "First polynomial (0-9):" << "\033[0m\n";
 
 					fflush(stdin);
-					scanf("%d", &first);
+					std::cin >> first;
 
-					std::cout << "\033[35;40m\033[1m" << "Second polynomial (1-10):" << "\033[0m\n";
+					if (first < 0 || first > 9) throw "Invalid number";
 
-					fflush(stdin);
-					scanf("%d", &second);
-
-					std::cout << "\033[35;40m\033[1m" << "Third polynomial (1-10):" << "\033[0m\n";
+					std::cout << "\033[35;40m\033[1m" << "Second polynomial (0-9):" << "\033[0m\n";
 
 					fflush(stdin);
-					scanf("%d", &third);
+					std::cin >> second;
+
+					if (second < 0 || second > 9) throw "Invalid number";
+
+					std::cout << "\033[35;40m\033[1m" << "Third polynomial (0-9):" << "\033[0m\n";
+
+					fflush(stdin);
+					std::cin >> third;
+
+					if (third < 0 || third > 9) throw "Invalid number";
 
 					polynomials[third] = Polynomial::additionPolynomials(polynomials[first], polynomials[second]);
-					polynomials[first].printCoeff();
+					std::cout << polynomials[first];
 					std::cout << "\033[35;40m\033[1m" << "+++++++\n" << "\033[0m\n";
-					polynomials[second].printCoeff();
+					std::cout << polynomials[second];
 					std::cout << "\033[35;40m\033[1m" << "=======\n" << "\033[0m\n";
-					polynomials[third].printCoeff();
+					std::cout << polynomials[third];
 					break;
 				}
 				else if (choose == 2)
 				{
-					std::cout << "\033[35;40m\033[1m" << "First polynomial (1-10):" << "\033[0m\n";
+					std::cout << "\033[35;40m\033[1m" << "First polynomial (0-9):" << "\033[0m\n";
 
 					fflush(stdin);
-					scanf("%d", &first);
+					std::cin >> first;
 
-					std::cout << "\033[35;40m\033[1m" << "Second polynomial (1-10):" << "\033[0m\n";
+					if (first < 0 || first > 9) throw "Invalid number";
 
-					fflush(stdin);
-					scanf("%d", &second);
-
-					std::cout << "\033[35;40m\033[1m" << "Third polynomial (1-10):" << "\033[0m\n";
+					std::cout << "\033[35;40m\033[1m" << "Second polynomial (0-9):" << "\033[0m\n";
 
 					fflush(stdin);
-					scanf("%d", &third);
+					std::cin >> second;
+
+					if (second < 0 || second > 9) throw "Invalid number";
+
+					std::cout << "\033[35;40m\033[1m" << "Third polynomial (0-9):" << "\033[0m\n";
+
+					fflush(stdin);
+					std::cin >> third;
+
+					if (third < 0 || third > 9) throw "Invalid number";
 
 					polynomials[third] = Polynomial::subtractionPolynomials(polynomials[first], polynomials[second]);
-					polynomials[first].printCoeff();
+					std::cout << polynomials[first];
 					std::cout << "--------\n";
-					polynomials[second].printCoeff();
+					std::cout << polynomials[second];
 					std::cout << "=======\n";
-					polynomials[third].printCoeff();
+					std::cout << polynomials[third];
 					break;
 				}
 				else throw "Invalid number";
 			}
-			case '6':
+			case 6:
 			{
 				int choose;
 				int factor;
 
-				std::cout << "\033[35;40m\033[1m" << "Polynomial (1-10):" << "\033[0m\n";
+				std::cout << "\033[35;40m\033[1m" << "Polynomial (0-9):" << "\033[0m\n";
 
 				fflush(stdin);
-				scanf("%d", &choose);
+				std::cin >> choose;
 
 				std::cout << "\033[35;40m\033[1m" << "Factor:" << "\033[0m\n";
 
 				fflush(stdin);
-				scanf("%d", &factor);
+				std::cin >> factor;
 
+				std::cout << polynomials[choose];
+				std::cout << "\033[35;40m\033[1m" << "*******\n" << factor << "\n=======" << "\033[0m\n\n";
 				polynomials[choose].multiplicationPolynomial(factor);
-				polynomials[choose].printCoeff();
+				std::cout << polynomials[choose];
 				break;
 			}
-			case '7':
+			case 7:
 			{
 				int choose;
 				int x;
 
-				std::cout << "\033[35;40m\033[1m" << "Polynomial (1-10):" << "\033[0m\n";
+				std::cout << "\033[35;40m\033[1m" << "Polynomial (0-9):" << "\033[0m\n";
 
 				fflush(stdin);
-				scanf("%d", &choose);
+				std::cin >> choose;
 
 				std::cout << "\033[35;40m\033[1m" << "x:" << "\033[0m\n";
 
 				fflush(stdin);
-				scanf("%d", &x);
+				std::cin >> x;
 
-				std::cout << "\033[37;40m\033[1m" << "Value:" << polynomials[choose].valueCalculation(x) << "x:" << "\033[0m\n\n";
+				std::cout << "\033[37;40m\033[1m" << "Value:" << polynomials[choose].valueCalculation(x) << "x:"
+						  << "\033[0m\n\n";
 				break;
 			}
-			case '8':
+			case 8:
 			{
 				int first;
 				int second;
 
-				std::cout << "\033[35;40m\033[1m" << "Enter the polynomial from which to take the integral (1-10)"
+				std::cout << "\033[35;40m\033[1m" << "Enter the polynomial from which to take the integral (0-9)"
 						  << "\033[0m\n";
 				fflush(stdin);
-				scanf("%d", &first);
+				std::cin >> first;
 
-				std::cout << "\033[35;40m\033[1m" << "Enter the polynomial where to write the integral (1-10)"
+				std::cout << "\033[35;40m\033[1m" << "Enter the polynomial where to write the integral (0-9)"
 						  << "\033[0m\n";
 				fflush(stdin);
-				scanf("%d", &first);
+				std::cin >> second;
 
 				polynomials[second] = polynomials[first].findIntegral();
-				polynomials[first].printCoeff();
-				polynomials[second].printCoeff();
+				std::cout << polynomials[first];
+				std::cout << polynomials[second];
 				break;
 			}
-			case '9':
+			case 9:
+			{
+				int indexPolynomial;
+
+				std::cout << "\033[35;40m\033[1m" << "Which cell (0-9) to reset?\n" << "\033[0m\n";
+				fflush(stdin);
+				std::cin >> indexPolynomial;
+
+				if (indexPolynomial < 0 || indexPolynomial > 10) throw "Invalid index";
+
+				std::cout << "\033[35;40m\033[1m" << "Polynom cleared: " << "\033[0m";
+				polynomials[indexPolynomial] = Polynomial();
+				std::cout << polynomials[indexPolynomial];
+				break;
+			}
+			case 10:
 			{
 				exit = true;
 				break;
