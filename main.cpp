@@ -48,11 +48,13 @@ class Polynomial
 		numberOfCoeff++;
 	}
 
-	Polynomial(int degree = 1)
+	Polynomial(int degree = 0)
 	{
 		numberOfCoeff = 0;
-		if (degree < 1) throw "Error";
+		if (degree < 0) throw "Error";
 		odds = nullptr;
+
+		if (degree == 0) return;
 
 		for (int i = 0; i <= degree; ++i)
 		{
@@ -96,6 +98,18 @@ class Polynomial
 		return os;
 	}
 
+	Polynomial operator*(int scalar)
+	{
+		Polynomial result(0);
+		Coeff* tmp = odds;
+		for (int i = 0; i < numberOfCoeff; ++i)
+		{
+			result.AddCoeff(tmp->number * scalar, tmp->degree);
+			tmp = tmp->pNext;
+		}
+		return result;
+	}
+
 	int valueCalculation(int x)
 	{
 		Coeff* tmp = odds;
@@ -113,8 +127,10 @@ class Polynomial
 int main()
 {
 	Polynomial a = Polynomial(8);
-	Polynomial b = Polynomial(10);
+	Polynomial b = Polynomial(5);
 	std::cout << a;
-	std::cout << b.valueCalculation(1);
+	std::cout << b;
+	Polynomial c = b * 977;
+	std::cout << c;
 	return 0;
 }
