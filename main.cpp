@@ -8,10 +8,10 @@ class Polynomial
 	{
 	 public:
 		Coeff* pNext; // указатель на следующий элемент
-		int number; // Коеффициент
+		double number; // Коеффициент
 		int degree; // Степень
 
-		Coeff(int data, int degreeCoeff, Coeff* pNext = nullptr)
+		Coeff(double data, int degreeCoeff, Coeff* pNext = nullptr)
 		{
 			this->number = data;
 			this->pNext = pNext;
@@ -22,9 +22,10 @@ class Polynomial
 	int numberOfCoeff;
  public:
 
-	void AddCoeff(const int data, const int degreeCoeff)
+	void AddCoeff(const double data, const int degreeCoeff)
 	{
 		if (data == 0) throw "Coefficient cannot be equal to zero";
+		if (degreeCoeff < 0) throw "Degree cannot be less zero";
 		Coeff* node = new Coeff(data, degreeCoeff);
 
 		if (odds == nullptr)
@@ -72,13 +73,13 @@ class Polynomial
 		Coeff* tmp = odds;
 		while (tmp)
 		{
-			if (tmp->pNext) std::cout << tmp->number << "^" << tmp->degree << " + ";
-			else std::cout << tmp->number << "^" << tmp->degree << std::endl;
+			if (tmp->pNext) std::cout << tmp->number << "x^" << tmp->degree << " + ";
+			else std::cout << tmp->number << "x^" << tmp->degree << std::endl;
 			tmp = tmp->pNext;
 		}
 	}
 
-	int operator[](const int degree)
+	double operator[](const int degree)
 	{
 		Coeff* tmp = this->odds;
 		while (tmp != nullptr)
@@ -98,7 +99,7 @@ class Polynomial
 		return os;
 	}
 
-	Polynomial operator*(int scalar)
+	Polynomial operator*(double scalar)
 	{
 		Polynomial result(0);
 		Coeff* tmp = odds;
@@ -110,10 +111,10 @@ class Polynomial
 		return result;
 	}
 
-	int valueCalculation(int x)
+	double ValueCalculation(double x)
 	{
 		Coeff* tmp = odds;
-		int sum = 0;
+		double sum = 0;
 		for (int i = 0; i < numberOfCoeff; ++i)
 		{
 			sum += pow((odds->number * x), i + 1);
@@ -122,15 +123,28 @@ class Polynomial
 		return sum;
 	}
 
+	Polynomial FindIntegral()
+	{
+		Polynomial integral(0);
+		Coeff* tmp = odds;
+
+		while (tmp)
+		{
+			integral.AddCoeff(tmp->number/(tmp->degree + 1), tmp->degree + 1);
+			tmp = tmp->pNext;
+		}
+
+		return integral;
+	}
+
 };
 
 int main()
 {
 	Polynomial a = Polynomial(8);
 	Polynomial b = Polynomial(5);
-	std::cout << a;
 	std::cout << b;
-	Polynomial c = b * 977;
+	Polynomial c = b.FindIntegral();
 	std::cout << c;
 	return 0;
 }
