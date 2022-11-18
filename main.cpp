@@ -79,6 +79,12 @@ class Polynomial
 		}
 	}
 
+	friend std::ostream& operator<<(std::ostream& os, Polynomial& obj)
+	{
+		obj.PrintPolynomial();
+		return os;
+	}
+
 	double operator[](const int degree)
 	{
 		Coeff* tmp = this->odds;
@@ -93,17 +99,23 @@ class Polynomial
 		return 0;
 	}
 
-	friend std::ostream& operator<<(std::ostream& os, Polynomial& obj)
-	{
-		obj.PrintPolynomial();
-		return os;
-	}
-
-	Polynomial operator*(double scalar)
+	Polynomial operator*(const double scalar)
 	{
 		Polynomial result(0);
 		Coeff* tmp = odds;
 		for (int i = 0; i < numberOfCoeff; ++i)
+		{
+			result.AddCoeff(tmp->number * scalar, tmp->degree);
+			tmp = tmp->pNext;
+		}
+		return result;
+	}
+
+	friend Polynomial operator* (const double scalar, const Polynomial& obj)
+	{
+		Polynomial result(0);
+		Coeff* tmp = obj.odds;
+		for (int i = 0; i < obj.numberOfCoeff; ++i)
 		{
 			result.AddCoeff(tmp->number * scalar, tmp->degree);
 			tmp = tmp->pNext;
@@ -130,7 +142,7 @@ class Polynomial
 
 		while (tmp)
 		{
-			integral.AddCoeff(tmp->number/(tmp->degree + 1), tmp->degree + 1);
+			integral.AddCoeff(tmp->number / (tmp->degree + 1), tmp->degree + 1);
 			tmp = tmp->pNext;
 		}
 
@@ -143,8 +155,10 @@ int main()
 {
 	Polynomial a = Polynomial(8);
 	Polynomial b = Polynomial(5);
-	std::cout << b;
-	Polynomial c = b.FindIntegral();
+	std::cout << b ;
+	Polynomial c = 5 * b;
 	std::cout << c;
+	Polynomial d = b * 5;
+	std::cout << d;
 	return 0;
 }
