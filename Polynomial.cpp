@@ -27,7 +27,6 @@ class Polynomial
 		if (data == 0) throw "Coefficient cannot be equal to zero";
 		if (degreeCoeff < 0) throw "Degree cannot be less zero";
 		Coeff* node = new Coeff(data, degreeCoeff);
-
 		if (odds == nullptr)
 		{
 			odds = node;
@@ -43,6 +42,11 @@ class Polynomial
 					return;
 				}
 				tmp = tmp->pNext;
+			}
+			if (degreeCoeff == tmp->degree)
+			{
+				tmp->number = data;
+				return;
 			}
 			tmp->pNext = node;
 		}

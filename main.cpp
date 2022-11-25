@@ -1,265 +1,315 @@
 #include <iostream>
-#include <math.h>
-
-class Polynomial
-{
- private:
-	class Coeff
-	{
-	 public:
-		Coeff* pNext;
-		double number;
-		int degree;
-
-		Coeff(double data, int degreeCoeff, Coeff* pNext = nullptr)
-		{
-			this->number = data;
-			this->pNext = pNext;
-			this->degree = degreeCoeff;
-		}
-	};
-	Coeff* odds;
-	int numberOfCoeff;
- public:
-
-	void Set(const double data, const int degreeCoeff)
-	{
-		if (data == 0) throw "Coefficient cannot be equal to zero";
-		if (degreeCoeff < 0) throw "Degree cannot be less zero";
-		Coeff* node = new Coeff(data, degreeCoeff);
-
-		if (odds == nullptr)
-		{
-			odds = node;
-		}
-		else
-		{
-			Coeff* tmp = odds;
-			while (tmp->pNext)
-			{
-				if (degreeCoeff == tmp->degree)
-				{
-					tmp->number = data;
-					return;
-				}
-				tmp = tmp->pNext;
-			}
-			tmp->pNext = node;
-		}
-		numberOfCoeff++;
-	}
-
-	Polynomial(int degree = 0)
-	{
-		numberOfCoeff = 0;
-		if (degree < 0) throw "Error";
-		odds = nullptr;
-
-		if (degree == 0) return;
-
-		for (int i = 0; i <= degree; ++i)
-		{
-			Set(1, i);
-		}
-	}
-
-	~Polynomial()
-	{
-		delete[] odds;
-	}
-
-	void PrintPolynomial()
-	{
-		Coeff* tmp = odds;
-		while (tmp)
-		{
-			if (tmp->pNext) std::cout << tmp->number << "x^" << tmp->degree << " + ";
-			else std::cout << tmp->number << "x^" << tmp->degree << std::endl;
-			tmp = tmp->pNext;
-		}
-	}
-
-	friend std::ostream& operator<<(std::ostream& os, Polynomial& obj)
-	{
-		obj.PrintPolynomial();
-		return os;
-	}
-
-	double operator[](const int degree)
-	{
-		Coeff* tmp = this->odds;
-		while (tmp != nullptr)
-		{
-			if (degree == tmp->degree)
-			{
-				return tmp->number;
-			}
-			tmp = tmp->pNext;
-		}
-		return 0;
-	}
-
-	Polynomial operator*(const double scalar)
-	{
-		Polynomial result(0);
-		Coeff* tmp = odds;
-		for (int i = 0; i < numberOfCoeff; ++i)
-		{
-			result.Set(tmp->number * scalar, tmp->degree);
-			tmp = tmp->pNext;
-		}
-		return result;
-	}
-
-	friend Polynomial operator*(const double scalar, const Polynomial& obj)
-	{
-		Polynomial result(0);
-		Coeff* tmp = obj.odds;
-		for (int i = 0; i < obj.numberOfCoeff; ++i)
-		{
-			result.Set(tmp->number * scalar, tmp->degree);
-			tmp = tmp->pNext;
-		}
-		return result;
-	}
-
-	double ValueCalculation(double x)
-	{
-		Coeff* tmp = odds;
-		double sum = 0;
-		for (int i = 0; i < numberOfCoeff; ++i)
-		{
-			sum += pow((odds->number * x), i + 1);
-		}
-
-		return sum;
-	}
-
-	Polynomial FindIntegral()
-	{
-		Polynomial integral(0);
-		Coeff* tmp = odds;
-
-		while (tmp)
-		{
-			integral.Set(tmp->number / (tmp->degree + 1), tmp->degree + 1);
-			tmp = tmp->pNext;
-		}
-
-		return integral;
-	}
-
-	Polynomial operator+(Polynomial& obj)
-	{
-		Polynomial sum(0);
-		Coeff* tmp1 = odds;
-		while (tmp1)
-		{
-			Coeff* tmp2 = obj.odds;
-			bool found = false;
-			while (tmp2 and !found)
-			{
-				if (tmp1->degree == tmp2->degree)
-				{
-					sum.Set(tmp1->number + tmp2->number, tmp1->degree);
-					found = true;
-				}
-				tmp2 = tmp2->pNext;
-			}
-			if (!found)
-			{
-				sum.Set(tmp1->number, tmp1->degree);
-			}
-			tmp1 = tmp1->pNext;
-		}
-		Coeff* tmp2 = obj.odds;
-		while (tmp2)
-		{
-			tmp1 = sum.odds;
-			bool found = false;
-			while (tmp1 and !found)
-			{
-				if (tmp2->degree == tmp1->degree)
-				{
-					found = true;
-				}
-				tmp1 = tmp1->pNext;
-			}
-			if (!found)
-			{
-				sum.Set(tmp2->number, tmp2->degree);
-			}
-			tmp2 = tmp2->pNext;
-		}
-
-		return sum;
-
-	};
-
-	Polynomial operator-(Polynomial& obj)
-	{
-		Polynomial difference(0);
-		Coeff* tmp1 = odds;
-		while (tmp1)
-		{
-			Coeff* tmp2 = obj.odds;
-			bool found = false;
-			while (tmp2 and !found)
-			{
-				if (tmp1->degree == tmp2->degree)
-				{
-					if (tmp1->number - tmp2->number != 0)
-					{
-						difference.Set(tmp1->number - tmp2->number, tmp1->degree);
-					}
-					found = true;
-				}
-				tmp2 = tmp2->pNext;
-			}
-			if (!found)
-			{
-				difference.Set(tmp1->number, tmp1->degree);
-			}
-			tmp1 = tmp1->pNext;
-		}
-
-		Coeff* tmp2 = obj.odds;
-		while (tmp2)
-		{
-			tmp1 = odds;
-			bool found = false;
-			while (tmp1 and !found)
-			{
-				if (tmp2->degree == tmp1->degree)
-				{
-					found = true;
-				}
-				tmp1 = tmp1->pNext;
-			}
-			if (!found)
-			{
-				difference.Set(tmp2->number, tmp2->degree);
-			}
-			tmp2 = tmp2->pNext;
-		}
-
-		return difference;
-
-	};
-};
+#include "Polynomial.cpp"
 
 int main()
 {
-	Polynomial a = Polynomial(5);
-	Polynomial b = Polynomial(5);
-	b.Set(-2, 6);
-	b.Set(-32, 7);
-	b.Set(42, 1);
-	b.Set(82, 9);
-	a.Set(500, 10);
-	std::cout << a;
-	std::cout << b;
-	Polynomial c = b - a;
-	std::cout << c;
-	return 0;
+	try
+	{
+		bool exit = false;
+		const int SIZE = 9;
+		Polynomial polynomials[SIZE];
+
+		while (!exit)
+		{
+			int choose;
+			bool right_choose = false;
+
+			std::cout << "\n" << "\033[35;40m\033[1m" << "Menu:\n"
+														 "1 - List of polynomials\n"
+														 "2 - Create polynomial\n"
+														 "3 - Get coefficient\n"
+														 "4 - Set coefficient\n"
+														 "5 - Polynomial addition and subtraction operators\n"
+														 "6 - Operator of multiplication of a polynomial by a scalar\n"
+														 "7 - Calculation of polynomial value at a given value of x.\n"
+														 "8 - Find the integral of a polynomial.\n"
+														 "9 - Reset polymonial\n"
+														 "10 - Exit\n"
+														 "Enter a number:" << "\033[0m";
+
+			while (!right_choose)
+			{
+				fflush(stdin);
+				std::cin >> choose;
+				if (choose > 11 || choose < 1)
+				{
+					std::cout << "\033[31;40m\033[1m" << "Incorrect number! Enter a number from 1 to 9: " << "\033[0m";
+				}
+				else
+				{
+					right_choose = true;
+				}
+			}
+
+			switch (choose)
+			{
+			case 1:
+			{
+				std::cout << "\n" << "\033[33;40m\033[1m" << "List of polynomials:" << "\033[0m\n\n";
+				for (int i = 0; i < SIZE; ++i)
+				{
+					std::cout << "\033[37;40m\033[1m" << i << ".\n" << "\033[0m";
+					std::cout << polynomials[i];
+				}
+				std::cout << "\n\n";
+			}
+				break;
+			case 2:
+			{
+				int indexPolynomial;
+
+				std::cout << "\033[35;40m\033[1m" << "in which cell (0-8) to write?\n" << "\033[0m\n";
+				fflush(stdin);
+				std::cin >> indexPolynomial;
+				if (indexPolynomial < 0 || indexPolynomial > 9) throw "Invalid index";
+
+				int element;
+				int degree;
+				bool enter;
+				polynomials[indexPolynomial] = Polynomial();
+
+				while (enter)
+				{
+					std::cout << "\033[35;40m\033[1m" << "Enter coefficient " << "\033[0m\n";
+					fflush(stdin);
+					std::cin >> element;
+					if (std::cin.fail())
+					{
+						std::cin.clear();
+						std::cin.ignore();
+						enter = false;
+					}
+					else
+					{
+						std::cout << "\033[35;40m\033[1m" << "Enter degree " << "\033[0m\n";
+						fflush(stdin);
+						std::cin >> degree;
+						if (std::cin.fail())
+						{
+							std::cin.clear();
+							std::cin.ignore();
+							enter = false;
+						}
+						else
+						{
+							polynomials[indexPolynomial].Set(element, degree);
+						}
+					}
+				}
+				break;
+			}
+			case 3:
+			{
+				int degree;
+				int indexPolynomial;
+
+				std::cout << "\033[35;40m\033[1m" << "in which cell (0-8) to read?\n" << "\033[0m\n";
+				fflush(stdin);
+				std::cin >> indexPolynomial;
+
+				if (indexPolynomial < 0 || indexPolynomial > 10) throw "Invalid index";
+
+				std::cout << "\033[35;40m\033[1m" << "Enter the degree at which to read the coefficient\n"
+						  << "\033[0m\n";
+				fflush(stdin);
+				std::cin >> degree;
+
+				int coeff = polynomials[indexPolynomial][degree];
+
+				std::cout << "\033[37;40m\033[1m" << "coefficient with degree " << degree << ": " << coeff
+						  << "\033[0m\n\n";
+
+			}
+				break;
+			case 4:
+			{
+				int degree;
+				int indexPolynomial;
+				int coeff;
+
+				std::cout << "\033[35;40m\033[1m" << "In which cell (0-8) to write?\n" << "\033[0m\n";
+				fflush(stdin);
+				std::cin >> indexPolynomial;
+
+				if (indexPolynomial < 0 || indexPolynomial > 10) throw "Invalid index";
+
+				std::cout << "\033[35;40m\033[1m" << "Enter the degree at which to change the coefficient\n"
+						  << "\033[0m\n";
+				fflush(stdin);
+				std::cin >> degree;
+
+				if (degree < 1) throw "Invalid degree";
+
+				std::cout << "\033[35;40m\033[1m" << "Enter the coefficient\n" << "\033[0m\n";
+				fflush(stdin);
+				std::cin >> coeff;
+
+				polynomials[indexPolynomial].Set(coeff, degree);
+				std::cout << polynomials[indexPolynomial];
+
+				break;
+			}
+			case 5:
+			{
+				int first;
+				int second;
+				int third;
+				int choose;
+
+				std::cout << "\033[35;40m\033[1m" << "1. adding\n"
+													 "2. subtraction\n" << "\033[0m\n";
+				fflush(stdin);
+				std::cin >> choose;
+				if (choose < 1 || choose > 2) throw "Invalid number";
+
+				if (choose == 1)
+				{
+					std::cout << "\033[35;40m\033[1m" << "First polynomial (0-8):" << "\033[0m\n";
+
+					fflush(stdin);
+					std::cin >> first;
+
+					if (first < 0 || first > 9) throw "Invalid number";
+
+					std::cout << "\033[35;40m\033[1m" << "Second polynomial (0-8):" << "\033[0m\n";
+
+					fflush(stdin);
+					std::cin >> second;
+
+					if (second < 0 || second > 9) throw "Invalid number";
+
+					std::cout << "\033[35;40m\033[1m" << "Third polynomial (0-8):" << "\033[0m\n";
+
+					fflush(stdin);
+					std::cin >> third;
+
+					if (third < 0 || third > 9) throw "Invalid number";
+
+					polynomials[third] = polynomials[first] + polynomials[second];
+					std::cout << polynomials[first];
+					std::cout << "\033[35;40m\033[1m" << "+++++++\n" << "\033[0m\n";
+					std::cout << polynomials[second];
+					std::cout << "\033[35;40m\033[1m" << "=======\n" << "\033[0m\n";
+					std::cout << polynomials[third];
+					break;
+				}
+				else if (choose == 2)
+				{
+					std::cout << "\033[35;40m\033[1m" << "First polynomial (0-8):" << "\033[0m\n";
+
+					fflush(stdin);
+					std::cin >> first;
+
+					if (first < 0 || first > 9) throw "Invalid number";
+
+					std::cout << "\033[35;40m\033[1m" << "Second polynomial (0-8):" << "\033[0m\n";
+
+					fflush(stdin);
+					std::cin >> second;
+
+					if (second < 0 || second > 9) throw "Invalid number";
+
+					std::cout << "\033[35;40m\033[1m" << "Third polynomial (0-8):" << "\033[0m\n";
+
+					fflush(stdin);
+					std::cin >> third;
+
+					if (third < 0 || third > 9) throw "Invalid number";
+
+					polynomials[third] = polynomials[third] = polynomials[first] - polynomials[second];
+					std::cout << polynomials[first];
+					std::cout << "--------\n";
+					std::cout << polynomials[second];
+					std::cout << "=======\n";
+					std::cout << polynomials[third];
+					break;
+				}
+				else throw "Invalid number";
+			}
+			case 6:
+			{
+				int choose;
+				int factor;
+
+				std::cout << "\033[35;40m\033[1m" << "Polynomial (0-8):" << "\033[0m\n";
+
+				fflush(stdin);
+				std::cin >> choose;
+
+				std::cout << "\033[35;40m\033[1m" << "Factor:" << "\033[0m\n";
+
+				fflush(stdin);
+				std::cin >> factor;
+
+				std::cout << polynomials[choose];
+				std::cout << "\033[35;40m\033[1m" << "*******\n" << factor << "\n=======" << "\033[0m\n\n";
+				polynomials[choose] = polynomials[choose] * factor;
+				std::cout << polynomials[choose];
+				break;
+			}
+			case 7:
+			{
+				int choose;
+				int x;
+
+				std::cout << "\033[35;40m\033[1m" << "Polynomial (0-8):" << "\033[0m\n";
+
+				fflush(stdin);
+				std::cin >> choose;
+
+				std::cout << "\033[35;40m\033[1m" << "x:" << "\033[0m\n";
+
+				fflush(stdin);
+				std::cin >> x;
+
+				std::cout << "\033[37;40m\033[1m" << "Value:" << polynomials[choose].ValueCalculation(x) << "x:"
+						  << "\033[0m\n\n";
+				break;
+			}
+			case 8:
+			{
+				int first;
+				int second;
+
+				std::cout << "\033[35;40m\033[1m" << "Enter the polynomial from which to take the integral (0-8)"
+						  << "\033[0m\n";
+				fflush(stdin);
+				std::cin >> first;
+
+				std::cout << "\033[35;40m\033[1m" << "Enter the polynomial where to write the integral (0-8)"
+						  << "\033[0m\n";
+				fflush(stdin);
+				std::cin >> second;
+
+				polynomials[second] = polynomials[first].FindIntegral();
+				std::cout << polynomials[first];
+				std::cout << polynomials[second];
+				break;
+			}
+			case 9:
+			{
+				int indexPolynomial;
+
+				std::cout << "\033[35;40m\033[1m" << "Which cell (0-8) to reset?\n" << "\033[0m\n";
+				fflush(stdin);
+				std::cin >> indexPolynomial;
+
+				if (indexPolynomial < 0 || indexPolynomial > 10) throw "Invalid index";
+
+				std::cout << "\033[35;40m\033[1m" << "Polynom cleared" << "\033[0m";
+				polynomials[indexPolynomial] = Polynomial(0);
+				break;
+			}
+			case 10:
+			{
+				exit = true;
+				break;
+			}
+			}
+		}
+	}
+	catch (const char* e)
+	{
+		std::cout << "\033[31;40m\033[1m" << (e) << "\033[0m\n";
+	}
 }
