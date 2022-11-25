@@ -22,6 +22,11 @@ class Polynomial
 	int numberOfCoeff;
  public:
 
+	int GetNumberOfCoeff()
+	{
+		return numberOfCoeff;
+	}
+
 	void Set(const double data, const int degreeCoeff)
 	{
 		if (data == 0) throw "Coefficient cannot be equal to zero";

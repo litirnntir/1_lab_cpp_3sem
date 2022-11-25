@@ -65,7 +65,7 @@ int main()
 
 				int element;
 				int degree;
-				bool enter;
+				bool enter = true;
 				polynomials[indexPolynomial] = Polynomial();
 
 				while (enter)
@@ -186,11 +186,19 @@ int main()
 					if (third < 0 || third > 9) throw "Invalid number";
 
 					polynomials[third] = polynomials[first] + polynomials[second];
-					std::cout << polynomials[first];
-					std::cout << "\033[35;40m\033[1m" << "+++++++\n" << "\033[0m\n";
-					std::cout << polynomials[second];
-					std::cout << "\033[35;40m\033[1m" << "=======\n" << "\033[0m\n";
-					std::cout << polynomials[third];
+
+					if (polynomials[third].GetNumberOfCoeff() == 0)
+					{
+						std::cout << "\033[35;40m\033[1m" << "Polymonial is Empty\n" << "\033[0m\n";
+					}
+					else
+					{
+						std::cout << polynomials[first];
+						std::cout << "\033[35;40m\033[1m" << "+++++++\n" << "\033[0m\n";
+						std::cout << polynomials[second];
+						std::cout << "\033[35;40m\033[1m" << "=======\n" << "\033[0m\n";
+						std::cout << polynomials[third];
+					}
 					break;
 				}
 				else if (choose == 2)
@@ -217,11 +225,18 @@ int main()
 					if (third < 0 || third > 9) throw "Invalid number";
 
 					polynomials[third] = polynomials[third] = polynomials[first] - polynomials[second];
-					std::cout << polynomials[first];
-					std::cout << "--------\n";
-					std::cout << polynomials[second];
-					std::cout << "=======\n";
-					std::cout << polynomials[third];
+					if (polynomials[third].GetNumberOfCoeff() == 0)
+					{
+						std::cout << "\033[35;40m\033[1m" << "Polymonial is Empty\n" << "\033[0m\n";
+					}
+					else
+					{
+						std::cout << polynomials[first];
+						std::cout << "--------\n";
+						std::cout << polynomials[second];
+						std::cout << "=======\n";
+						std::cout << polynomials[third];
+					}
 					break;
 				}
 				else throw "Invalid number";
@@ -241,10 +256,17 @@ int main()
 				fflush(stdin);
 				std::cin >> factor;
 
-				std::cout << polynomials[choose];
-				std::cout << "\033[35;40m\033[1m" << "*******\n" << factor << "\n=======" << "\033[0m\n\n";
-				polynomials[choose] = polynomials[choose] * factor;
-				std::cout << polynomials[choose];
+				if (polynomials[choose].GetNumberOfCoeff() == 0)
+				{
+					std::cout << "\033[35;40m\033[1m" << "Polymonial is Empty\n" << "\033[0m\n";
+				}
+				else
+				{
+					std::cout << polynomials[choose];
+					std::cout << "\033[35;40m\033[1m" << "*******\n" << factor << "\n=======" << "\033[0m\n\n";
+					polynomials[choose] = polynomials[choose] * factor;
+					std::cout << polynomials[choose];
+				}
 				break;
 			}
 			case 7:
@@ -262,8 +284,7 @@ int main()
 				fflush(stdin);
 				std::cin >> x;
 
-				std::cout << "\033[37;40m\033[1m" << "Value:" << polynomials[choose].ValueCalculation(x) << "x:"
-						  << "\033[0m\n\n";
+				std::cout << "\033[37;40m\033[1m" << "Value:" << polynomials[choose].ValueCalculation(x) << "\033[0m\n\n";
 				break;
 			}
 			case 8:
