@@ -149,7 +149,6 @@ class Polynomial
 		return integral;
 	}
 
-
 	Polynomial operator+(Polynomial& obj)
 	{
 		Polynomial sum(0);
@@ -196,6 +195,57 @@ class Polynomial
 		return sum;
 
 	};
+
+	Polynomial operator-(Polynomial& obj)
+	{
+		Polynomial difference(0);
+		Coeff* tmp1 = odds;
+		while (tmp1)
+		{
+			Coeff* tmp2 = obj.odds;
+			bool found = false;
+			while (tmp2 and !found)
+			{
+				if (tmp1->degree == tmp2->degree)
+				{
+					if (tmp1->number - tmp2->number != 0)
+					{
+						difference.Set(tmp1->number - tmp2->number, tmp1->degree);
+					}
+					found = true;
+				}
+				tmp2 = tmp2->pNext;
+			}
+			if (!found)
+			{
+				difference.Set(tmp1->number, tmp1->degree);
+			}
+			tmp1 = tmp1->pNext;
+		}
+
+		Coeff* tmp2 = obj.odds;
+		while (tmp2)
+		{
+			tmp1 = odds;
+			bool found = false;
+			while (tmp1 and !found)
+			{
+				if (tmp2->degree == tmp1->degree)
+				{
+					found = true;
+				}
+				tmp1 = tmp1->pNext;
+			}
+			if (!found)
+			{
+				difference.Set(tmp2->number, tmp2->degree);
+			}
+			tmp2 = tmp2->pNext;
+		}
+
+		return difference;
+
+	};
 };
 
 int main()
@@ -203,10 +253,13 @@ int main()
 	Polynomial a = Polynomial(5);
 	Polynomial b = Polynomial(5);
 	b.Set(-2, 6);
-	a.Set(5, 6);
+	b.Set(-32, 7);
+	b.Set(42, 1);
+	b.Set(82, 9);
+	a.Set(500, 10);
 	std::cout << a;
 	std::cout << b;
-	Polynomial c = a + b;
+	Polynomial c = b - a;
 	std::cout << c;
 	return 0;
 }
