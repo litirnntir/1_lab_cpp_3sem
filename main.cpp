@@ -7,9 +7,9 @@ class Polynomial
 	class Coeff
 	{
 	 public:
-		Coeff* pNext; // указатель на следующий элемент
-		double number; // Коеффициент
-		int degree; // Степень
+		Coeff* pNext;
+		double number;
+		int degree;
 
 		Coeff(double data, int degreeCoeff, Coeff* pNext = nullptr)
 		{
@@ -22,7 +22,7 @@ class Polynomial
 	int numberOfCoeff;
  public:
 
-	void AddCoeff(const double data, const int degreeCoeff)
+	void Set(const double data, const int degreeCoeff)
 	{
 		if (data == 0) throw "Coefficient cannot be equal to zero";
 		if (degreeCoeff < 0) throw "Degree cannot be less zero";
@@ -59,7 +59,7 @@ class Polynomial
 
 		for (int i = 0; i <= degree; ++i)
 		{
-			AddCoeff(1, i);
+			Set(1, i);
 		}
 	}
 
@@ -105,19 +105,19 @@ class Polynomial
 		Coeff* tmp = odds;
 		for (int i = 0; i < numberOfCoeff; ++i)
 		{
-			result.AddCoeff(tmp->number * scalar, tmp->degree);
+			result.Set(tmp->number * scalar, tmp->degree);
 			tmp = tmp->pNext;
 		}
 		return result;
 	}
 
-	friend Polynomial operator* (const double scalar, const Polynomial& obj)
+	friend Polynomial operator*(const double scalar, const Polynomial& obj)
 	{
 		Polynomial result(0);
 		Coeff* tmp = obj.odds;
 		for (int i = 0; i < obj.numberOfCoeff; ++i)
 		{
-			result.AddCoeff(tmp->number * scalar, tmp->degree);
+			result.Set(tmp->number * scalar, tmp->degree);
 			tmp = tmp->pNext;
 		}
 		return result;
@@ -142,23 +142,71 @@ class Polynomial
 
 		while (tmp)
 		{
-			integral.AddCoeff(tmp->number / (tmp->degree + 1), tmp->degree + 1);
+			integral.Set(tmp->number / (tmp->degree + 1), tmp->degree + 1);
 			tmp = tmp->pNext;
 		}
 
 		return integral;
 	}
 
+
+	Polynomial operator+(Polynomial& obj)
+	{
+		Polynomial sum(0);
+		Coeff* tmp1 = odds;
+		while (tmp1)
+		{
+			Coeff* tmp2 = obj.odds;
+			bool found = false;
+			while (tmp2 and !found)
+			{
+				if (tmp1->degree == tmp2->degree)
+				{
+					sum.Set(tmp1->number + tmp2->number, tmp1->degree);
+					found = true;
+				}
+				tmp2 = tmp2->pNext;
+			}
+			if (!found)
+			{
+				sum.Set(tmp1->number, tmp1->degree);
+			}
+			tmp1 = tmp1->pNext;
+		}
+		Coeff* tmp2 = obj.odds;
+		while (tmp2)
+		{
+			tmp1 = sum.odds;
+			bool found = false;
+			while (tmp1 and !found)
+			{
+				if (tmp2->degree == tmp1->degree)
+				{
+					found = true;
+				}
+				tmp1 = tmp1->pNext;
+			}
+			if (!found)
+			{
+				sum.Set(tmp2->number, tmp2->degree);
+			}
+			tmp2 = tmp2->pNext;
+		}
+
+		return sum;
+
+	};
 };
 
 int main()
 {
-	Polynomial a = Polynomial(8);
+	Polynomial a = Polynomial(5);
 	Polynomial b = Polynomial(5);
-	std::cout << b ;
-	Polynomial c = 5 * b;
+	b.Set(-2, 6);
+	a.Set(5, 6);
+	std::cout << a;
+	std::cout << b;
+	Polynomial c = a + b;
 	std::cout << c;
-	Polynomial d = b * 5;
-	std::cout << d;
 	return 0;
 }
