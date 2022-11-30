@@ -72,6 +72,17 @@ class Polynomial
 		}
 	}
 
+	Polynomial(const Polynomial & obj)
+	{
+		numberOfCoeff = obj.numberOfCoeff;
+		Coeff* tmp = obj.odds;
+		while (tmp)
+		{
+			Set(tmp->number, tmp->degree);
+			tmp = tmp->pNext;
+		}
+	}
+
 	~Polynomial()
 	{
 		delete[] odds;

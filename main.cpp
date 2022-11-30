@@ -58,7 +58,7 @@ int main()
 			{
 				int indexPolynomial;
 
-				std::cout << "\033[35;40m\033[1m" << "in which cell (0-8) to write?\n" << "\033[0m\n";
+				std::cout << "\033[35;40m\033[1m" << "in which cell (0-8) to write? to finish copying, enter any character\n" << "\033[0m\n";
 				fflush(stdin);
 				std::cin >> indexPolynomial;
 				if (indexPolynomial < 0 || indexPolynomial > 9) throw "Invalid index";
