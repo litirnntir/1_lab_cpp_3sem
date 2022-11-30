@@ -63,7 +63,7 @@ int main()
 				std::cin >> indexPolynomial;
 				if (indexPolynomial < 0 || indexPolynomial > 9) throw "Invalid index";
 
-				int element;
+				double element;
 				int degree;
 				bool enter = true;
 				polynomials[indexPolynomial] = Polynomial();
@@ -172,7 +172,6 @@ int main()
 					if (first < 0 || first > 9) throw "Invalid number";
 
 					std::cout << "\033[35;40m\033[1m" << "Second polynomial (0-8):" << "\033[0m\n";
-
 					fflush(stdin);
 					std::cin >> second;
 
@@ -244,7 +243,7 @@ int main()
 			case 6:
 			{
 				int choose;
-				int factor;
+				double factor;
 
 				std::cout << "\033[35;40m\033[1m" << "Polynomial (0-8):" << "\033[0m\n";
 

@@ -72,7 +72,7 @@ class Polynomial
 		}
 	}
 
-	Polynomial(const Polynomial & obj)
+	Polynomial(const Polynomial& obj)
 	{
 		numberOfCoeff = obj.numberOfCoeff;
 		Coeff* tmp = obj.odds;
@@ -270,7 +270,6 @@ class Polynomial
 
 	Polynomial& operator=(const Polynomial& right)
 	{
-		//проверка на самоприсваивание
 		if (this == &right)
 		{
 			return *this;
@@ -284,5 +283,86 @@ class Polynomial
 			tmp = tmp->pNext;
 		}
 		return *this;
+	}
+
+	bool operator==(const Polynomial& right)
+	{
+		if (this == &right)
+		{
+			return true;
+		}
+		if (numberOfCoeff != right.numberOfCoeff)
+		{
+			return false;
+		}
+		else
+		{
+			Coeff* tmp1 = odds;
+			while (tmp1)
+			{
+				Coeff* tmp2 = right.odds;
+				bool equal = false;
+				while (tmp2)
+				{
+					if (tmp1->number == tmp2->number && tmp1->degree == tmp2->degree)
+					{
+						equal = true;
+					}
+					tmp2 = tmp2->pNext;
+				}
+				if (!equal)
+				{
+					return false;
+				}
+				tmp1 = tmp1->pNext;
+			}
+		}
+		return true;
+	}
+
+	bool operator>(Polynomial right)
+	{
+		if (this == &right)
+		{
+			return true;
+		}
+		if (numberOfCoeff != right.numberOfCoeff)
+		{
+			return false;
+		}
+		else
+		{
+			if (ValueCalculation(1) > right.ValueCalculation(1))
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+	}
+
+	bool operator<(Polynomial right)
+	{
+		if (this == &right)
+		{
+			return true;
+		}
+		if (numberOfCoeff != right.numberOfCoeff)
+		{
+			return false;
+		}
+		else
+		{
+			if (ValueCalculation(1) < right.ValueCalculation(1))
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
 	}
 };
