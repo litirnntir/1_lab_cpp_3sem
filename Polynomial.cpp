@@ -136,9 +136,10 @@ class Polynomial
 	{
 		Coeff* tmp = odds;
 		double sum = 0;
-		for (int i = 0; i < numberOfCoeff; ++i)
+		while (tmp)
 		{
-			sum += pow((odds->number * x), i + 1);
+			sum += tmp->number * (pow(x, tmp->degree));
+			tmp = tmp->pNext;
 		}
 
 		return sum;
@@ -227,7 +228,7 @@ class Polynomial
 			}
 			if (!found)
 			{
-				difference.Set(tmp1->number, tmp1->degree);
+				difference.Set(tmp1->number * -1, tmp1->degree);
 			}
 			tmp1 = tmp1->pNext;
 		}
