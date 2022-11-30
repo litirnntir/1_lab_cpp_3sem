@@ -24,7 +24,8 @@ int main()
 														 "7 - Calculation of polynomial value at a given value of x.\n"
 														 "8 - Find the integral of a polynomial.\n"
 														 "9 - Reset polymonial\n"
-														 "10 - Exit\n"
+														 "10 - Equal\n"
+														 "11 - Exit\n"
 														 "Enter a number:" << "\033[0m";
 
 			while (!right_choose)
@@ -58,7 +59,8 @@ int main()
 			{
 				int indexPolynomial;
 
-				std::cout << "\033[35;40m\033[1m" << "in which cell (0-8) to write? to finish copying, enter any character\n" << "\033[0m\n";
+				std::cout << "\033[35;40m\033[1m"
+						  << "in which cell (0-8) to write? to finish copying, enter any character\n" << "\033[0m\n";
 				fflush(stdin);
 				std::cin >> indexPolynomial;
 				if (indexPolynomial < 0 || indexPolynomial > 9) throw "Invalid index";
@@ -283,7 +285,8 @@ int main()
 				fflush(stdin);
 				std::cin >> x;
 
-				std::cout << "\033[37;40m\033[1m" << "Value:" << polynomials[choose].ValueCalculation(x) << "\033[0m\n\n";
+				std::cout << "\033[37;40m\033[1m" << "Value:" << polynomials[choose].ValueCalculation(x)
+						  << "\033[0m\n\n";
 				break;
 			}
 			case 8:
@@ -321,6 +324,50 @@ int main()
 				break;
 			}
 			case 10:
+			{
+				int first;
+				int second;
+				int comparison;
+				bool answer;
+
+				std::cout << "\033[35;40m\033[1m" << "Enter the first polynomial (0-8)"
+						  << "\033[0m\n";
+				fflush(stdin);
+				std::cin >> first;
+
+				std::cout << "\033[35;40m\033[1m" << "Enter the second polynomial (0-8)"
+						  << "\033[0m\n";
+				fflush(stdin);
+				std::cin >> second;
+
+				std::cout << "\033[35;40m\033[1m" << "1. >\n2. <\n3. ==\n"
+						  << "\033[0m\n";
+				fflush(stdin);
+				std::cin >> comparison;
+
+				if (comparison == 1)
+				{
+					answer = polynomials[first] > polynomials[first];
+					std::cout << answer;
+				}
+				else if (comparison == 2)
+				{
+					answer = polynomials[first] < polynomials[first];
+					std::cout << answer;
+				}
+				else if (comparison == 3)
+				{
+					answer = polynomials[first] == polynomials[first];
+					std::cout << answer;
+				}
+				else
+				{
+					throw "Invalid number";
+				}
+
+				break;
+			}
+			case 11:
 			{
 				exit = true;
 				break;
