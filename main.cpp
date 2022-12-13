@@ -1,13 +1,14 @@
 #include <iostream>
+#include <complex>
 #include "Polynomial.cpp"
+const int SIZE = 9;
 
-int main()
+template<class T>
+int mainMenu(Polynomial<T> polynomials[])
 {
 	try
 	{
 		bool exit = false;
-		const int SIZE = 9;
-		Polynomial polynomials[SIZE];
 
 		while (!exit)
 		{
@@ -68,7 +69,7 @@ int main()
 				double element;
 				int degree;
 				bool enter = true;
-				polynomials[indexPolynomial] = Polynomial();
+				polynomials[indexPolynomial] = Polynomial<T>();
 
 				while (enter)
 				{
@@ -320,7 +321,7 @@ int main()
 				if (indexPolynomial < 0 || indexPolynomial > 10) throw "Invalid index";
 
 				std::cout << "\033[35;40m\033[1m" << "Polynom cleared" << "\033[0m";
-				polynomials[indexPolynomial] = Polynomial(0);
+				polynomials[indexPolynomial] = Polynomial<T>(0);
 				break;
 			}
 			case 10:
@@ -378,5 +379,102 @@ int main()
 	catch (const char* e)
 	{
 		std::cout << "\033[31;40m\033[1m" << (e) << "\033[0m\n";
+	}
+}
+
+int PreMenu()
+{
+	while (true)
+	{
+		int choose;
+
+		std::cout << "\n" << "\033[35;40m\033[1m" << "Menu:\n"
+													 "1 - <int>\n"
+													 "2 - <float>\n"
+													 "3 - <double>\n"
+													 "4 - <std::complex<float>>\n"
+													 "5 - <std::complex<double>>\n"
+													 "6 - Exit\n"
+													 "Enter a number:" << "\033[0m";
+
+		fflush(stdin);
+		std::cin >> choose;
+		if (choose > 6 || choose < 1)
+		{
+			std::cout << "\033[31;40m\033[1m" << "Incorrect number! Enter a number from 1 to 9: " << "\033[0m";
+		}
+
+		switch (choose)
+		{
+		case 1:
+		{
+			return 1;
+		}
+			break;
+		case 2:
+		{
+			return 2;
+		}
+		case 3:
+		{
+			return 3;
+		}
+		case 4:
+		{
+			return 4;
+		}
+		case 5:
+		{
+			return 5;
+		}
+		case 6:
+		{
+			return 0;
+		}
+		}
+	}
+}
+
+int main()
+{
+	while (true)
+	{
+		int type = PreMenu();
+		if (type == 0)
+		{
+			return 0;
+		}
+		try
+		{
+			if (type == 1)
+			{
+				Polynomial<int> polynomials[SIZE];
+				mainMenu(polynomials);
+			}
+			else if (type == 2)
+			{
+				Polynomial<float> polynomials[SIZE];
+				mainMenu(polynomials);
+			}
+			else if (type == 3)
+			{
+				Polynomial<double> polynomials[SIZE];
+				mainMenu(polynomials);
+			}
+//			else if (type == 4)
+//			{
+//				Polynomial<std::complex<float>> polynomials[SIZE];
+////				mainMenu(polynomials);
+//			}
+//			else if (type == 5)
+//			{
+//				Polynomial<std::complex<double>> polynomials[SIZE];
+////				mainMenu(polynomials);
+//			}
+		}
+		catch (const char* err)
+		{
+			std::cout << "Error: " << err;
+		}
 	}
 }

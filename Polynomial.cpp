@@ -1,6 +1,7 @@
 #include <iostream>
 #include <math.h>
 
+template <typename T>
 class Polynomial
 {
  private:
@@ -8,14 +9,14 @@ class Polynomial
 	{
 	 public:
 		Coeff* pNext;
-		double number;
+		T number;
 		int degree;
 
-		Coeff(double data, int degreeCoeff, Coeff* pNext = nullptr)
+		Coeff(T number, int degree, Coeff* pNext = nullptr)
 		{
-			this->number = data;
+			this->number = number;
 			this->pNext = pNext;
-			this->degree = degreeCoeff;
+			this->degree = degree;
 		}
 	};
 	Coeff* odds;
@@ -27,7 +28,7 @@ class Polynomial
 		return numberOfCoeff;
 	}
 
-	void Set(const double data, const int degreeCoeff)
+	void Set(const T data, const int degreeCoeff)
 	{
 		if (data == 0) throw "Coefficient cannot be equal to zero";
 		if (degreeCoeff < 0) throw "Degree cannot be less zero";
@@ -58,7 +59,7 @@ class Polynomial
 		numberOfCoeff++;
 	}
 
-	Polynomial(int degree = 0)
+	Polynomial<T>(int degree = 0)
 	{
 		numberOfCoeff = 0;
 		if (degree < 0) throw "Error";
@@ -72,7 +73,7 @@ class Polynomial
 		}
 	}
 
-	Polynomial(const Polynomial& obj)
+	Polynomial<T>(const Polynomial<T>& obj)
 	{
 		numberOfCoeff = obj.numberOfCoeff;
 		Coeff* tmp = obj.odds;
@@ -83,7 +84,7 @@ class Polynomial
 		}
 	}
 
-	~Polynomial()
+	~Polynomial<T>()
 	{
 		delete[] odds;
 	}
@@ -99,13 +100,13 @@ class Polynomial
 		}
 	}
 
-	friend std::ostream& operator<<(std::ostream& os, Polynomial& obj)
+	friend std::ostream& operator<<(std::ostream& os, Polynomial<T>& obj)
 	{
 		obj.PrintPolynomial();
 		return os;
 	}
 
-	double operator[](const int degree)
+	T operator[](const int degree)
 	{
 		Coeff* tmp = this->odds;
 		while (tmp != nullptr)
@@ -119,9 +120,9 @@ class Polynomial
 		return 0;
 	}
 
-	Polynomial operator*(const double scalar)
+	Polynomial<T> operator*(const T scalar)
 	{
-		Polynomial result(0);
+		Polynomial<T> result(0);
 		Coeff* tmp = odds;
 		for (int i = 0; i < numberOfCoeff; ++i)
 		{
@@ -131,9 +132,9 @@ class Polynomial
 		return result;
 	}
 
-	friend Polynomial operator*(const double scalar, const Polynomial& obj)
+	friend Polynomial<T> operator*(const T scalar, const Polynomial<T>& obj)
 	{
-		Polynomial result(0);
+		Polynomial<T> result(0);
 		Coeff* tmp = obj.odds;
 		for (int i = 0; i < obj.numberOfCoeff; ++i)
 		{
@@ -143,10 +144,10 @@ class Polynomial
 		return result;
 	}
 
-	double ValueCalculation(double x)
+	T ValueCalculation(T x)
 	{
 		Coeff* tmp = odds;
-		double sum = 0;
+		T sum = 0;
 		while (tmp)
 		{
 			sum += tmp->number * (pow(x, tmp->degree));
@@ -156,9 +157,9 @@ class Polynomial
 		return sum;
 	}
 
-	Polynomial FindIntegral()
+	Polynomial<T> FindIntegral()
 	{
-		Polynomial integral(0);
+		Polynomial<T> integral(0);
 		Coeff* tmp = odds;
 
 		while (tmp)
@@ -170,9 +171,9 @@ class Polynomial
 		return integral;
 	}
 
-	Polynomial operator+(Polynomial& obj)
+	Polynomial<T> operator+(Polynomial<T>& obj)
 	{
-		Polynomial sum(0);
+		Polynomial<T> sum(0);
 		Coeff* tmp1 = odds;
 		while (tmp1)
 		{
@@ -217,9 +218,9 @@ class Polynomial
 
 	};
 
-	Polynomial operator-(Polynomial& obj)
+	Polynomial<T> operator-(Polynomial<T>& obj)
 	{
-		Polynomial difference(0);
+		Polynomial<T> difference(0);
 		Coeff* tmp1 = odds;
 		while (tmp1)
 		{
@@ -268,7 +269,7 @@ class Polynomial
 
 	};
 
-	Polynomial& operator=(const Polynomial& right)
+	Polynomial<T>& operator=(const Polynomial<T>& right)
 	{
 		if (this == &right)
 		{
@@ -285,7 +286,7 @@ class Polynomial
 		return *this;
 	}
 
-	bool operator==(const Polynomial& right)
+	bool operator==(const Polynomial<T>& right)
 	{
 		if (this == &right)
 		{
@@ -320,7 +321,7 @@ class Polynomial
 		return true;
 	}
 
-	bool operator>(Polynomial right)
+	bool operator>(Polynomial<T> right)
 	{
 		if (this == &right)
 		{
@@ -343,7 +344,7 @@ class Polynomial
 		}
 	}
 
-	bool operator<(Polynomial right)
+	bool operator<(Polynomial<T> right)
 	{
 		if (this == &right)
 		{
