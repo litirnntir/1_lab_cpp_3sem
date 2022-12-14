@@ -51,7 +51,8 @@ int mainMenu(Polynomial<T> polynomials[])
 				for (int i = 0; i < SIZE; ++i)
 				{
 					std::cout << "\033[37;40m\033[1m" << i << ".\n" << "\033[0m";
-					std::cout << polynomials[i];
+//					std::cout << polynomials[i];
+					polynomials[i].PrintPolynomial();
 				}
 				std::cout << "\n\n";
 			}
@@ -117,7 +118,7 @@ int mainMenu(Polynomial<T> polynomials[])
 				fflush(stdin);
 				std::cin >> degree;
 
-				int coeff = polynomials[indexPolynomial][degree];
+				T coeff = polynomials[indexPolynomial][degree];
 
 				std::cout << "\033[37;40m\033[1m" << "coefficient with degree " << degree << ": " << coeff
 						  << "\033[0m\n\n";
@@ -148,8 +149,8 @@ int mainMenu(Polynomial<T> polynomials[])
 				std::cin >> coeff;
 
 				polynomials[indexPolynomial].Set(coeff, degree);
-				std::cout << polynomials[indexPolynomial];
-
+//				std::cout << polynomials[indexPolynomial];
+				polynomials[indexPolynomial].PrintPolynomial();
 				break;
 			}
 			case 5:
@@ -195,11 +196,14 @@ int mainMenu(Polynomial<T> polynomials[])
 					}
 					else
 					{
-						std::cout << polynomials[first];
+//						std::cout << polynomials[first];
+						polynomials[first].PrintPolynomial();
 						std::cout << "\033[35;40m\033[1m" << "+++++++\n" << "\033[0m\n";
-						std::cout << polynomials[second];
+//						std::cout << polynomials[second];
+						polynomials[second].PrintPolynomial();
 						std::cout << "\033[35;40m\033[1m" << "=======\n" << "\033[0m\n";
-						std::cout << polynomials[third];
+//						std::cout << polynomials[third];
+						polynomials[third].PrintPolynomial();
 					}
 					break;
 				}
@@ -233,11 +237,14 @@ int mainMenu(Polynomial<T> polynomials[])
 					}
 					else
 					{
-						std::cout << polynomials[first];
+//						std::cout << polynomials[first];
+						polynomials[first].PrintPolynomial();
 						std::cout << "--------\n";
-						std::cout << polynomials[second];
+//						std::cout << polynomials[second];
+						polynomials[second].PrintPolynomial();
 						std::cout << "=======\n";
-						std::cout << polynomials[third];
+//						std::cout << polynomials[third];
+						polynomials[third].PrintPolynomial();
 					}
 					break;
 				}
@@ -264,17 +271,19 @@ int mainMenu(Polynomial<T> polynomials[])
 				}
 				else
 				{
-					std::cout << polynomials[choose];
+//					std::cout << polynomials[choose];
+					polynomials[choose].PrintPolynomial();
 					std::cout << "\033[35;40m\033[1m" << "*******\n" << factor << "\n=======" << "\033[0m\n\n";
 					polynomials[choose] = polynomials[choose] * factor;
-					std::cout << polynomials[choose];
+//					std::cout << polynomials[choose];
+					polynomials[choose].PrintPolynomial();
 				}
 				break;
 			}
 			case 7:
 			{
 				int choose;
-				int x;
+				T x;
 
 				std::cout << "\033[35;40m\033[1m" << "Polynomial (0-8):" << "\033[0m\n";
 
@@ -306,8 +315,10 @@ int mainMenu(Polynomial<T> polynomials[])
 				std::cin >> second;
 
 				polynomials[second] = polynomials[first].FindIntegral();
-				std::cout << polynomials[first];
-				std::cout << polynomials[second];
+//				std::cout << polynomials[first];
+				polynomials[first].PrintPolynomial();
+//				std::cout << polynomials[second];
+				polynomials[second].PrintPolynomial();
 				break;
 			}
 			case 9:
@@ -461,16 +472,16 @@ int main()
 				Polynomial<double> polynomials[SIZE];
 				mainMenu(polynomials);
 			}
-//			else if (type == 4)
-//			{
-//				Polynomial<std::complex<float>> polynomials[SIZE];
-////				mainMenu(polynomials);
-//			}
-//			else if (type == 5)
-//			{
-//				Polynomial<std::complex<double>> polynomials[SIZE];
-////				mainMenu(polynomials);
-//			}
+			else if (type == 4)
+			{
+				Polynomial<std::complex<float>> polynomials[SIZE];
+				mainMenu(polynomials);
+			}
+			else if (type == 5)
+			{
+				Polynomial<std::complex<double>> polynomials[SIZE];
+				mainMenu(polynomials);
+			}
 		}
 		catch (const char* err)
 		{
