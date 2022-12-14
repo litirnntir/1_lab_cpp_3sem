@@ -1,14 +1,13 @@
 #include <iostream>
-#include <complex>
 #include "Polynomial.cpp"
-const int SIZE = 9;
 
-template<class T>
-int mainMenu(Polynomial<T> polynomials[])
+int main()
 {
 	try
 	{
 		bool exit = false;
+		const int SIZE = 9;
+		Polynomial polynomials[SIZE];
 
 		while (!exit)
 		{
@@ -51,8 +50,7 @@ int mainMenu(Polynomial<T> polynomials[])
 				for (int i = 0; i < SIZE; ++i)
 				{
 					std::cout << "\033[37;40m\033[1m" << i << ".\n" << "\033[0m";
-//					std::cout << polynomials[i];
-					polynomials[i].PrintPolynomial();
+					std::cout << polynomials[i];
 				}
 				std::cout << "\n\n";
 			}
@@ -70,7 +68,7 @@ int mainMenu(Polynomial<T> polynomials[])
 				double element;
 				int degree;
 				bool enter = true;
-				polynomials[indexPolynomial] = Polynomial<T>();
+				polynomials[indexPolynomial] = Polynomial();
 
 				while (enter)
 				{
@@ -118,7 +116,7 @@ int mainMenu(Polynomial<T> polynomials[])
 				fflush(stdin);
 				std::cin >> degree;
 
-				T coeff = polynomials[indexPolynomial][degree];
+				int coeff = polynomials[indexPolynomial][degree];
 
 				std::cout << "\033[37;40m\033[1m" << "coefficient with degree " << degree << ": " << coeff
 						  << "\033[0m\n\n";
@@ -149,8 +147,8 @@ int mainMenu(Polynomial<T> polynomials[])
 				std::cin >> coeff;
 
 				polynomials[indexPolynomial].Set(coeff, degree);
-//				std::cout << polynomials[indexPolynomial];
-				polynomials[indexPolynomial].PrintPolynomial();
+				std::cout << polynomials[indexPolynomial];
+
 				break;
 			}
 			case 5:
@@ -196,14 +194,11 @@ int mainMenu(Polynomial<T> polynomials[])
 					}
 					else
 					{
-//						std::cout << polynomials[first];
-						polynomials[first].PrintPolynomial();
+						std::cout << polynomials[first];
 						std::cout << "\033[35;40m\033[1m" << "+++++++\n" << "\033[0m\n";
-//						std::cout << polynomials[second];
-						polynomials[second].PrintPolynomial();
+						std::cout << polynomials[second];
 						std::cout << "\033[35;40m\033[1m" << "=======\n" << "\033[0m\n";
-//						std::cout << polynomials[third];
-						polynomials[third].PrintPolynomial();
+						std::cout << polynomials[third];
 					}
 					break;
 				}
@@ -237,14 +232,11 @@ int mainMenu(Polynomial<T> polynomials[])
 					}
 					else
 					{
-//						std::cout << polynomials[first];
-						polynomials[first].PrintPolynomial();
+						std::cout << polynomials[first];
 						std::cout << "--------\n";
-//						std::cout << polynomials[second];
-						polynomials[second].PrintPolynomial();
+						std::cout << polynomials[second];
 						std::cout << "=======\n";
-//						std::cout << polynomials[third];
-						polynomials[third].PrintPolynomial();
+						std::cout << polynomials[third];
 					}
 					break;
 				}
@@ -271,19 +263,17 @@ int mainMenu(Polynomial<T> polynomials[])
 				}
 				else
 				{
-//					std::cout << polynomials[choose];
-					polynomials[choose].PrintPolynomial();
+					std::cout << polynomials[choose];
 					std::cout << "\033[35;40m\033[1m" << "*******\n" << factor << "\n=======" << "\033[0m\n\n";
 					polynomials[choose] = polynomials[choose] * factor;
-//					std::cout << polynomials[choose];
-					polynomials[choose].PrintPolynomial();
+					std::cout << polynomials[choose];
 				}
 				break;
 			}
 			case 7:
 			{
 				int choose;
-				T x;
+				int x;
 
 				std::cout << "\033[35;40m\033[1m" << "Polynomial (0-8):" << "\033[0m\n";
 
@@ -315,10 +305,8 @@ int mainMenu(Polynomial<T> polynomials[])
 				std::cin >> second;
 
 				polynomials[second] = polynomials[first].FindIntegral();
-//				std::cout << polynomials[first];
-				polynomials[first].PrintPolynomial();
-//				std::cout << polynomials[second];
-				polynomials[second].PrintPolynomial();
+				std::cout << polynomials[first];
+				std::cout << polynomials[second];
 				break;
 			}
 			case 9:
@@ -332,7 +320,7 @@ int mainMenu(Polynomial<T> polynomials[])
 				if (indexPolynomial < 0 || indexPolynomial > 10) throw "Invalid index";
 
 				std::cout << "\033[35;40m\033[1m" << "Polynom cleared" << "\033[0m";
-				polynomials[indexPolynomial] = Polynomial<T>(0);
+				polynomials[indexPolynomial] = Polynomial(0);
 				break;
 			}
 			case 10:
@@ -390,102 +378,5 @@ int mainMenu(Polynomial<T> polynomials[])
 	catch (const char* e)
 	{
 		std::cout << "\033[31;40m\033[1m" << (e) << "\033[0m\n";
-	}
-}
-
-int PreMenu()
-{
-	while (true)
-	{
-		int choose;
-
-		std::cout << "\n" << "\033[35;40m\033[1m" << "Menu:\n"
-													 "1 - <int>\n"
-													 "2 - <float>\n"
-													 "3 - <double>\n"
-													 "4 - <std::complex<float>>\n"
-													 "5 - <std::complex<double>>\n"
-													 "6 - Exit\n"
-													 "Enter a number:" << "\033[0m";
-
-		fflush(stdin);
-		std::cin >> choose;
-		if (choose > 6 || choose < 1)
-		{
-			std::cout << "\033[31;40m\033[1m" << "Incorrect number! Enter a number from 1 to 9: " << "\033[0m";
-		}
-
-		switch (choose)
-		{
-		case 1:
-		{
-			return 1;
-		}
-			break;
-		case 2:
-		{
-			return 2;
-		}
-		case 3:
-		{
-			return 3;
-		}
-		case 4:
-		{
-			return 4;
-		}
-		case 5:
-		{
-			return 5;
-		}
-		case 6:
-		{
-			return 0;
-		}
-		}
-	}
-}
-
-int main()
-{
-	while (true)
-	{
-		int type = PreMenu();
-		if (type == 0)
-		{
-			return 0;
-		}
-		try
-		{
-			if (type == 1)
-			{
-				Polynomial<int> polynomials[SIZE];
-				mainMenu(polynomials);
-			}
-			else if (type == 2)
-			{
-				Polynomial<float> polynomials[SIZE];
-				mainMenu(polynomials);
-			}
-			else if (type == 3)
-			{
-				Polynomial<double> polynomials[SIZE];
-				mainMenu(polynomials);
-			}
-			else if (type == 4)
-			{
-				Polynomial<std::complex<float>> polynomials[SIZE];
-				mainMenu(polynomials);
-			}
-			else if (type == 5)
-			{
-				Polynomial<std::complex<double>> polynomials[SIZE];
-				mainMenu(polynomials);
-			}
-		}
-		catch (const char* err)
-		{
-			std::cout << "Error: " << err;
-		}
 	}
 }
