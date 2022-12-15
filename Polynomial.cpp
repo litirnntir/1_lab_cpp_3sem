@@ -1,5 +1,6 @@
 #include <iostream>
 #include <math.h>
+#include <complex>
 
 template<typename T>
 class Polynomial
@@ -222,47 +223,58 @@ class Polynomial
 	{
 		Polynomial<T> difference(0);
 		Coeff* tmp1 = odds;
-		while (tmp1)
+		if (obj.numberOfCoeff == 0)
 		{
-			Coeff* tmp2 = obj.odds;
-			bool found = false;
-			while (tmp2 and !found)
+			while (tmp1)
 			{
-				if (tmp1->degree == tmp2->degree)
-				{
-					if (tmp1->number - tmp2->number != 0)
-					{
-						difference.Set(tmp1->number - tmp2->number, tmp1->degree);
-					}
-					found = true;
-				}
-				tmp2 = tmp2->pNext;
+				difference.Set(tmp1->number, tmp1->degree);
+				tmp1 = tmp1->pNext;
 			}
-			if (!found)
-			{
-				difference.Set(tmp1->number * -1, tmp1->degree);
-			}
-			tmp1 = tmp1->pNext;
 		}
-
-		Coeff* tmp2 = obj.odds;
-		while (tmp2)
+		else
 		{
-			tmp1 = odds;
-			bool found = false;
-			while (tmp1 and !found)
+			while (tmp1)
 			{
-				if (tmp2->degree == tmp1->degree)
+				Coeff* tmp2 = obj.odds;
+				bool found = false;
+				while (tmp2 and !found)
 				{
-					found = true;
+					if (tmp1->degree == tmp2->degree)
+					{
+						if (tmp1->number - tmp2->number != 0)
+						{
+							difference.Set(tmp1->number - tmp2->number, tmp1->degree);
+						}
+						found = true;
+					}
+					tmp2 = tmp2->pNext;
+				}
+				if (!found)
+				{
+					difference.Set(tmp1->number * -1, tmp1->degree);
 				}
 				tmp1 = tmp1->pNext;
 			}
-			if (!found)
+
+			Coeff* tmp2 = obj.odds;
+			while (tmp2)
 			{
-				difference.Set(tmp2->number, tmp2->degree);
+				tmp1 = odds;
+				bool found = false;
+				while (tmp1 and !found)
+				{
+					if (tmp2->degree == tmp1->degree)
+					{
+						found = true;
+					}
+					tmp1 = tmp1->pNext;
+				}
+				if (!found)
+				{
+					difference.Set(tmp2->number, tmp2->degree);
+				}
+				tmp2 = tmp2->pNext;
 			}
-			tmp2 = tmp2->pNext;
 		}
 
 		return difference;
@@ -321,6 +333,7 @@ class Polynomial
 		return true;
 	}
 
+	//TODO: fix this
 	bool operator>(Polynomial<T> right)
 	{
 		if (this == &right)
@@ -344,6 +357,7 @@ class Polynomial
 		}
 	}
 
+	//TODO: fix this
 	bool operator<(Polynomial<T> right)
 	{
 		if (this == &right)
@@ -592,49 +606,61 @@ class Polynomial<std::complex<T>>
 	{
 		Polynomial<std::complex<T>> difference(0);
 		Coeff* tmp1 = odds;
-		while (tmp1)
+		if (obj.numberOfCoeff == 0)
 		{
-			Coeff* tmp2 = obj.odds;
-			bool found = false;
-			while (tmp2 and !found)
+			while (tmp1)
 			{
-				if (tmp1->degree == tmp2->degree)
-				{
-					if ((tmp1->number - tmp2->number).real() != 0 and (tmp1->number - tmp2->number).imag() != 0)
-					{
-						difference.Set(tmp1->number - tmp2->number, tmp1->degree);
-					}
-					found = true;
-				}
-				tmp2 = tmp2->pNext;
+				difference.Set(tmp1->number, tmp1->degree);
+				tmp1 = tmp1->pNext;
 			}
-			if (!found)
-			{
-				std::complex<T> a = std::complex<T>(tmp1->number.real() * -1, tmp1->number.imag() * -1);
-				difference.Set(a, tmp1->degree);
-			}
-			tmp1 = tmp1->pNext;
 		}
-
-		Coeff* tmp2 = obj.odds;
-		while (tmp2)
+		else
 		{
-			tmp1 = odds;
-			bool found = false;
-			while (tmp1 and !found)
+			while (tmp1)
 			{
-				if (tmp2->degree == tmp1->degree)
+				Coeff* tmp2 = obj.odds;
+				bool found = false;
+				while (tmp2 and !found)
 				{
-					found = true;
+					if (tmp1->degree == tmp2->degree)
+					{
+						if ((tmp1->number - tmp2->number).real() != 0 and (tmp1->number - tmp2->number).imag() != 0)
+						{
+							difference.Set(tmp1->number - tmp2->number, tmp1->degree);
+						}
+						found = true;
+					}
+					tmp2 = tmp2->pNext;
+				}
+				if (!found)
+				{
+					std::complex<T> a = std::complex<T>(tmp1->number.real() * -1, tmp1->number.imag() * -1);
+					difference.Set(a, tmp1->degree);
 				}
 				tmp1 = tmp1->pNext;
 			}
-			if (!found)
+
+			Coeff* tmp2 = obj.odds;
+			while (tmp2)
 			{
-				difference.Set(tmp2->number, tmp2->degree);
+				tmp1 = odds;
+				bool found = false;
+				while (tmp1 and !found)
+				{
+					if (tmp2->degree == tmp1->degree)
+					{
+						found = true;
+					}
+					tmp1 = tmp1->pNext;
+				}
+				if (!found)
+				{
+					difference.Set(tmp2->number, tmp2->degree);
+				}
+				tmp2 = tmp2->pNext;
 			}
-			tmp2 = tmp2->pNext;
 		}
+
 
 		return difference;
 

@@ -522,7 +522,8 @@ int mainMenuComplex(Polynomial<std::complex<T>> polynomials[])
 			{
 				int degree;
 				int indexPolynomial;
-				int coeff;
+				int coeffReal;
+				int coeffImag;
 
 				std::cout << "\033[35;40m\033[1m" << "In which cell (0-8) to write?\n" << "\033[0m\n";
 				fflush(stdin);
@@ -537,11 +538,15 @@ int mainMenuComplex(Polynomial<std::complex<T>> polynomials[])
 
 				if (degree < 1) throw "Invalid degree";
 
-				std::cout << "\033[35;40m\033[1m" << "Enter the coefficient\n" << "\033[0m\n";
+				std::cout << "\033[35;40m\033[1m" << "Enter the coefficient real\n" << "\033[0m\n";
 				fflush(stdin);
-				std::cin >> coeff;
+				std::cin >> coeffReal;
 
-				polynomials[indexPolynomial].Set(coeff, degree);
+				std::cout << "\033[35;40m\033[1m" << "Enter the coefficient imag\n" << "\033[0m\n";
+				fflush(stdin);
+				std::cin >> coeffImag;
+
+				polynomials[indexPolynomial].Set(std::complex<T>(coeffReal, coeffImag), degree);
 //				std::cout << polynomials[indexPolynomial];
 				polynomials[indexPolynomial].PrintPolynomial();
 				break;
