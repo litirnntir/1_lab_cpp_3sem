@@ -520,7 +520,7 @@ class Polynomial<std::complex<T>>
 		Coeff* tmp = obj.odds;
 		for (int i = 0; i < obj.numberOfCoeff; ++i)
 		{
-			result.Set(tmp->number * scalar, tmp->degree);
+			result.Set((std::complex<T>)tmp->number * (std::complex<T>)scalar, tmp->degree);
 			tmp = tmp->pNext;
 		}
 		return result;
@@ -719,6 +719,7 @@ class Polynomial<std::complex<T>>
 		return true;
 	}
 
+	//TODO: fix this
 	bool operator>(Polynomial<std::complex<T>> right)
 	{
 		if (this == &right)
@@ -743,6 +744,7 @@ class Polynomial<std::complex<T>>
 		}
 	}
 
+	//TODO: fix this
 	bool operator<(Polynomial<std::complex<T>> right)
 	{
 		if (this == &right)
