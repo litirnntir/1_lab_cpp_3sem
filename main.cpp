@@ -429,7 +429,6 @@ int mainMenuComplex(Polynomial<std::complex<T>> polynomials[])
 				for (int i = 0; i < SIZE; ++i)
 				{
 					std::cout << "\033[37;40m\033[1m" << i << ".\n" << "\033[0m";
-//					std::cout << polynomials[i];
 					polynomials[i].PrintPolynomial();
 				}
 				std::cout << "\n\n";
@@ -547,7 +546,6 @@ int mainMenuComplex(Polynomial<std::complex<T>> polynomials[])
 				std::cin >> coeffImag;
 
 				polynomials[indexPolynomial].Set(std::complex<T>(coeffReal, coeffImag), degree);
-//				std::cout << polynomials[indexPolynomial];
 				polynomials[indexPolynomial].PrintPolynomial();
 				break;
 			}
@@ -594,13 +592,10 @@ int mainMenuComplex(Polynomial<std::complex<T>> polynomials[])
 					}
 					else
 					{
-//						std::cout << polynomials[first];
 						polynomials[first].PrintPolynomial();
 						std::cout << "\033[35;40m\033[1m" << "+++++++\n" << "\033[0m\n";
-//						std::cout << polynomials[second];
 						polynomials[second].PrintPolynomial();
 						std::cout << "\033[35;40m\033[1m" << "=======\n" << "\033[0m\n";
-//						std::cout << polynomials[third];
 						polynomials[third].PrintPolynomial();
 					}
 					break;
@@ -635,13 +630,10 @@ int mainMenuComplex(Polynomial<std::complex<T>> polynomials[])
 					}
 					else
 					{
-//						std::cout << polynomials[first];
 						polynomials[first].PrintPolynomial();
 						std::cout << "--------\n";
-//						std::cout << polynomials[second];
 						polynomials[second].PrintPolynomial();
 						std::cout << "=======\n";
-//						std::cout << polynomials[third];
 						polynomials[third].PrintPolynomial();
 					}
 					break;
@@ -675,12 +667,10 @@ int mainMenuComplex(Polynomial<std::complex<T>> polynomials[])
 				}
 				else
 				{
-//					std::cout << polynomials[choose];
 					std::complex<T> factor(factorReal, factorImag);
 					polynomials[choose].PrintPolynomial();
 					std::cout << "\033[35;40m\033[1m" << "*******\n" << factor<< "\n=======" << "\033[0m\n\n";
 					polynomials[choose] = polynomials[choose] * factor;
-//					std::cout << polynomials[choose];
 					polynomials[choose].PrintPolynomial();
 				}
 				break;
@@ -726,9 +716,7 @@ int mainMenuComplex(Polynomial<std::complex<T>> polynomials[])
 				std::cin >> second;
 
 				polynomials[second] = polynomials[first].FindIntegral();
-//				std::cout << polynomials[first];
 				polynomials[first].PrintPolynomial();
-//				std::cout << polynomials[second];
 				polynomials[second].PrintPolynomial();
 				break;
 			}
