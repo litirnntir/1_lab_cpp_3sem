@@ -642,36 +642,36 @@ int mainMenuComplex(Polynomial<std::complex<T>> polynomials[])
 			}
 			case 6:
 			{
-				int choose;
+				int chooseP;
 				T factorReal;
 				T factorImag;
 
 				std::cout << "\033[35;40m\033[1m" << "Polynomial (0-8):" << "\033[0m\n";
 
 				fflush(stdin);
-				std::cin >> choose;
+				std::cin >> chooseP;
 
 				std::cout << "\033[35;40m\033[1m" << "Factor Real:" << "\033[0m\n";
 
 				fflush(stdin);
 				std::cin >> factorReal;
 
-				std::cout << "\033[35;40m\033[1m" << "Factor Real:" << "\033[0m\n";
+				std::cout << "\033[35;40m\033[1m" << "Factor Imag:" << "\033[0m\n";
 
 				fflush(stdin);
 				std::cin >> factorImag;
 
-				if (polynomials[choose].GetNumberOfCoeff() == 0)
+				if (polynomials[chooseP].GetNumberOfCoeff() == 0)
 				{
 					std::cout << "\033[35;40m\033[1m" << "Polymonial is Empty\n" << "\033[0m\n";
 				}
 				else
 				{
 					std::complex<T> factor(factorReal, factorImag);
-					polynomials[choose].PrintPolynomial();
-					std::cout << "\033[35;40m\033[1m" << "*******\n" << factor<< "\n=======" << "\033[0m\n\n";
-					polynomials[choose] = polynomials[choose] * factor;
-					polynomials[choose].PrintPolynomial();
+					polynomials[chooseP].PrintPolynomial();
+					std::cout << "\033[35;40m\033[1m" << "*******\n" << factor << "\n=======" << "\033[0m\n\n";
+					polynomials[chooseP] = factor * polynomials[chooseP];
+					polynomials[chooseP].PrintPolynomial();
 				}
 				break;
 			}
@@ -696,7 +696,8 @@ int mainMenuComplex(Polynomial<std::complex<T>> polynomials[])
 				fflush(stdin);
 				std::cin >> xImag;
 
-				std::cout << "\033[37;40m\033[1m" << "Value:" << polynomials[choose].ValueCalculation(std::complex<T>(xReal, xImag))
+				std::cout << "\033[37;40m\033[1m" << "Value:"
+						  << polynomials[choose].ValueCalculation(std::complex<T>(xReal, xImag))
 						  << "\033[0m\n\n";
 				break;
 			}

@@ -419,14 +419,17 @@ class Polynomial<std::complex<T>>
 		else
 		{
 			Coeff* tmp = odds;
-			while (tmp->pNext)
+			if (tmp->pNext != nullptr)
 			{
-				if (degreeCoeff == tmp->degree)
+				while (tmp->pNext)
 				{
-					tmp->number = data;
-					return;
+					if (degreeCoeff == tmp->degree)
+					{
+						tmp->number = data;
+						return;
+					}
+					tmp = tmp->pNext;
 				}
-				tmp = tmp->pNext;
 			}
 			if (degreeCoeff == tmp->degree)
 			{
@@ -512,7 +515,7 @@ class Polynomial<std::complex<T>>
 		Coeff* tmp = obj.odds;
 		for (int i = 0; i < obj.numberOfCoeff; ++i)
 		{
-			result.Set((std::complex<T>)tmp->number * (std::complex<T>)scalar, tmp->degree);
+			result.Set(tmp->number * (std::complex<T>)scalar, tmp->degree);
 			tmp = tmp->pNext;
 		}
 		return result;
