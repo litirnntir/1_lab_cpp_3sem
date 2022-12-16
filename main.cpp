@@ -688,19 +688,25 @@ int mainMenuComplex(Polynomial<std::complex<T>> polynomials[])
 			case 7:
 			{
 				int choose;
-				std::complex<T> x;
+				T xReal;
+				T xImag;
 
 				std::cout << "\033[35;40m\033[1m" << "Polynomial (0-8):" << "\033[0m\n";
 
 				fflush(stdin);
 				std::cin >> choose;
 
-				std::cout << "\033[35;40m\033[1m" << "x:" << "\033[0m\n";
+				std::cout << "\033[35;40m\033[1m" << "x Real:" << "\033[0m\n";
 
 				fflush(stdin);
-				std::cin >> x;
+				std::cin >> xReal;
 
-				std::cout << "\033[37;40m\033[1m" << "Value:" << polynomials[choose].ValueCalculation(x)
+				std::cout << "\033[35;40m\033[1m" << "x Imag:" << "\033[0m\n";
+
+				fflush(stdin);
+				std::cin >> xImag;
+
+				std::cout << "\033[37;40m\033[1m" << "Value:" << polynomials[choose].ValueCalculation(std::complex<T>(xReal, xImag))
 						  << "\033[0m\n\n";
 				break;
 			}
@@ -736,8 +742,8 @@ int mainMenuComplex(Polynomial<std::complex<T>> polynomials[])
 
 				if (indexPolynomial < 0 || indexPolynomial > 10) throw "Invalid index";
 
-				std::cout << "\033[35;40m\033[1m" << "Polynom cleared" << "\033[0m";
 				polynomials[indexPolynomial] = Polynomial<std::complex<T>>(0);
+				std::cout << "\033[35;40m\033[1m" << "Polynomial cleared" << "\033[0m";
 				break;
 			}
 			case 10:
@@ -826,7 +832,6 @@ int PreMenu()
 		{
 			return 1;
 		}
-			break;
 		case 2:
 		{
 			return 2;

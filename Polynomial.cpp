@@ -333,12 +333,11 @@ class Polynomial
 		return true;
 	}
 
-	//TODO: fix this
-	bool operator>(Polynomial<T> right)
+	bool operator>(Polynomial<T>& right)
 	{
 		if (this == &right)
 		{
-			return true;
+			return false;
 		}
 		if (numberOfCoeff != right.numberOfCoeff)
 		{
@@ -357,12 +356,11 @@ class Polynomial
 		}
 	}
 
-	//TODO: fix this
-	bool operator<(Polynomial<T> right)
+	bool operator<(Polynomial<T>& right)
 	{
 		if (this == &right)
 		{
-			return true;
+			return false;
 		}
 		if (numberOfCoeff != right.numberOfCoeff)
 		{
@@ -482,12 +480,6 @@ class Polynomial<std::complex<T>>
 		}
 	}
 
-//	friend std::ostream& operator<<(std::ostream& os, Polynomial<T>& obj)
-//	{
-//		obj.PrintPolynomial();
-//		return os;
-//	}
-
 	std::complex<T> operator[](const int degree)
 	{
 		Coeff* tmp = this->odds;
@@ -508,7 +500,7 @@ class Polynomial<std::complex<T>>
 		Coeff* tmp = odds;
 		for (int i = 0; i < numberOfCoeff; ++i)
 		{
-			result.Set(tmp->number * scalar, tmp->degree);
+			result.Set((std::complex<T>)tmp->number * (std::complex<T>)scalar, tmp->degree);
 			tmp = tmp->pNext;
 		}
 		return result;
@@ -719,12 +711,11 @@ class Polynomial<std::complex<T>>
 		return true;
 	}
 
-	//TODO: fix this
-	bool operator>(Polynomial<std::complex<T>> right)
+	bool operator>(Polynomial<std::complex<T>>& right)
 	{
 		if (this == &right)
 		{
-			return true;
+			return false;
 		}
 		if (numberOfCoeff != right.numberOfCoeff)
 		{
@@ -744,12 +735,11 @@ class Polynomial<std::complex<T>>
 		}
 	}
 
-	//TODO: fix this
-	bool operator<(Polynomial<std::complex<T>> right)
+	bool operator<(Polynomial<std::complex<T>>& right)
 	{
 		if (this == &right)
 		{
-			return true;
+			return false;
 		}
 		if (numberOfCoeff != right.numberOfCoeff)
 		{
