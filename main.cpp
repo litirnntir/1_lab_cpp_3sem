@@ -306,6 +306,8 @@ int mainMenu(Polynomial<T> polynomials[])
 
 				polynomials[second] = polynomials[first].FindIntegral();
 				std::cout << polynomials[first];
+				std::cout << "\033[35;40m\033[1m" << "========="
+						  << "\033[0m\n";
 				std::cout << polynomials[second];
 				break;
 			}

@@ -93,11 +93,18 @@ class Polynomial
 	void PrintPolynomial()
 	{
 		Coeff* tmp = odds;
-		while (tmp)
+		if (numberOfCoeff != 0)
 		{
-			if (tmp->pNext) std::cout << tmp->number << "x^" << tmp->degree << " + ";
-			else std::cout << tmp->number << "x^" << tmp->degree << std::endl;
-			tmp = tmp->pNext;
+			while (tmp)
+			{
+				if (tmp->pNext) std::cout << tmp->number << "x^" << tmp->degree << " + ";
+				else std::cout << tmp->number << "x^" << tmp->degree << std::endl;
+				tmp = tmp->pNext;
+			}
+		}
+		else
+		{
+			std::cout << "All coefficients is 0" << std::endl;
 		}
 	}
 
@@ -165,7 +172,10 @@ class Polynomial
 
 		while (tmp)
 		{
-			integral.Set(tmp->number / (tmp->degree + 1), tmp->degree + 1);
+			if ((tmp->number / (tmp->degree + 1)) != 0)
+			{
+				integral.Set(tmp->number / (tmp->degree + 1), tmp->degree + 1);
+			}
 			tmp = tmp->pNext;
 		}
 
@@ -475,11 +485,18 @@ class Polynomial<std::complex<T>>
 	void PrintPolynomial()
 	{
 		Coeff* tmp = odds;
-		while (tmp)
+		if (numberOfCoeff != 0)
 		{
-			if (tmp->pNext) std::cout << tmp->number << "x^" << tmp->degree << " + ";
-			else std::cout << tmp->number << "x^" << tmp->degree << std::endl;
-			tmp = tmp->pNext;
+			while (tmp)
+			{
+				if (tmp->pNext) std::cout << tmp->number << "x^" << tmp->degree << " + ";
+				else std::cout << tmp->number << "x^" << tmp->degree << std::endl;
+				tmp = tmp->pNext;
+			}
+		}
+		else
+		{
+			std::cout << "All coefficients is 0" << std::endl;
 		}
 	}
 
