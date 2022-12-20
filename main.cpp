@@ -308,7 +308,7 @@ int mainMenu(Polynomial<T> polynomials[])
 				std::cout << polynomials[first];
 				std::cout << "\033[35;40m\033[1m" << "========="
 						  << "\033[0m\n";
-				std::cout << polynomials[second];
+				std::cout << polynomials[second] << "+C";
 				break;
 			}
 			case 9:
@@ -721,6 +721,7 @@ int mainMenuComplex(Polynomial<std::complex<T>> polynomials[])
 				polynomials[second] = polynomials[first].FindIntegral();
 				polynomials[first].PrintPolynomial();
 				polynomials[second].PrintPolynomial();
+				std:: cout << "+C";
 				break;
 			}
 			case 9:
