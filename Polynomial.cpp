@@ -1,16 +1,22 @@
 #include <iostream>
 #include <math.h>
 #include <complex>
+#include <locale>
+#include <iomanip>
+#include <complex>
+#include <forward_list>
+#include <iterator>
 
 template<typename T>
 class Polynomial
 {
  private:
+	template<typename T2>
 	class Coeff
 	{
 	 public:
-		Coeff* pNext;
-		T number;
+		Coeff*  pNext;
+		T2 number;
 		int degree;
 
 		Coeff(T number, int degree, Coeff* pNext = nullptr)
@@ -20,7 +26,7 @@ class Polynomial
 			this->degree = degree;
 		}
 	};
-	Coeff* odds;
+	std::forward_list<Coeff<T>> odds = nullptr;
 	int numberOfCoeff;
  public:
 
