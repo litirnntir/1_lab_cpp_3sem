@@ -252,7 +252,6 @@ class Polynomial
 			{
 				sum.Set(i->number, i->degree);
 			}
-			i++;
 		}
 
 
@@ -272,7 +271,6 @@ class Polynomial
 			{
 				sum.Set(j->number, j->degree);
 			}
-			j++;
 		}
 
 		return sum;
@@ -344,7 +342,6 @@ class Polynomial
 			{
 				difference.Set(i->number * -1, i->degree);
 			}
-			i++;
 		}
 
 		for (auto j = obj.begin(); j != obj.end(); ++j)
@@ -363,7 +360,6 @@ class Polynomial
 			{
 				difference.Set(j->number, j->degree);
 			}
-			j++;
 		}
 
 		return difference;
