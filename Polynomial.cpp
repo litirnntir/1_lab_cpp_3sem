@@ -36,12 +36,10 @@ class Polynomial
 		return numberOfCoeff;
 	}
 
-	//new
 	auto begin()
 	{
 		return odds.begin();
 	}
-	//new
 	auto end()
 	{
 		return odds.end();
@@ -62,24 +60,6 @@ class Polynomial
 		}
 		odds.push_back(Coeff<T>(data, degreeCoeff));
 		numberOfCoeff++;
-
-
-//		Coeff* tmp = odds;
-//		while (tmp->pNext)
-//		{
-//			if (degreeCoeff == tmp->degree)
-//			{
-//				tmp->number = data;
-//				return;
-//			}
-//			tmp = tmp->pNext;
-//		}
-//		if (degreeCoeff == tmp->degree)
-//		{
-//			tmp->number = data;
-//			return;
-//		}
-//		tmp->pNext = node;
 	}
 
 	Polynomial<T>(int degree = 0)
@@ -95,26 +75,9 @@ class Polynomial
 		}
 	}
 
-//	Polynomial<T>(const Polynomial<T>& obj)
-//	{
-//		numberOfCoeff = obj.numberOfCoeff;
-//		Coeff* tmp = obj.odds;
-//		while (tmp)
-//		{
-//			Set(tmp->number, tmp->degree);
-//			tmp = tmp->pNext;
-//		}
-//	}
-
-//	~Polynomial<T>()
-//	{
-//		delete[] odds;
-//	}
-
 	void PrintPolynomial()
 	{
 
-//		Coeff* tmp = odds;
 		if (numberOfCoeff != 0)
 		{
 			for (auto i = begin(); i != end(); ++i)
@@ -124,12 +87,6 @@ class Polynomial
 			}
 		}
 
-//			while (tmp)
-//			{
-//				if (tmp->pNext) std::cout << tmp->number << "x^" << tmp->degree << " + ";
-//				else std::cout << tmp->number << "x^" << tmp->degree << std::endl;
-//				tmp = tmp->pNext;
-//			}
 		else
 		{
 			std::cout << "All coefficients is 0" << std::endl;
@@ -149,15 +106,6 @@ class Polynomial
 			if (i->degree == degree) return i->number;
 		}
 		return 0;
-//		Coeff* tmp = this->odds;
-//		while (tmp != nullptr)
-//		{
-//			if (degree == tmp->degree)
-//			{
-//				return tmp->number;
-//			}
-//			tmp = tmp->pNext;
-//		}
 	}
 
 	Polynomial<T> operator*(const T scalar)
@@ -168,12 +116,6 @@ class Polynomial
 			result.Set(i->number * scalar, i->degree);
 		}
 		return result;
-//		Coeff* tmp = odds;
-//		for (int i = 0; i < numberOfCoeff; ++i)
-//		{
-//			result.Set(tmp->number * scalar, tmp->degree);
-//			tmp = tmp->pNext;
-//		}
 	}
 
 	friend Polynomial<T> operator*(const T scalar, const Polynomial<T>& obj)
@@ -184,12 +126,6 @@ class Polynomial
 			result.Set(i->number * scalar, i->degree);
 		}
 		return result;
-//		Coeff* tmp = obj.odds;
-//		for (int i = 0; i < obj.numberOfCoeff; ++i)
-//		{
-//			result.Set(tmp->number * scalar, tmp->degree);
-//			tmp = tmp->pNext;
-//		}
 	}
 
 	T ValueCalculation(T x)
@@ -200,12 +136,6 @@ class Polynomial
 			sum += i->number * (pow(x, i->degree));
 		}
 		return sum;
-//		Coeff* tmp = odds;
-//		while (tmp)
-//		{
-//			sum += tmp->number * (pow(x, tmp->degree));
-//			tmp = tmp->pNext;
-//		}
 	}
 
 	Polynomial<T> FindIntegral()
@@ -219,16 +149,6 @@ class Polynomial
 			}
 		}
 		return integral;
-//		Coeff* tmp = odds;
-//
-//		while (tmp)
-//		{
-//			if ((tmp->number / (tmp->degree + 1)) != 0)
-//			{
-//				integral.Set(tmp->number / (tmp->degree + 1), tmp->degree + 1);
-//			}
-//			tmp = tmp->pNext;
-//		}
 	}
 
 	Polynomial<T> operator+(Polynomial<T>& obj)
@@ -274,47 +194,6 @@ class Polynomial
 		}
 
 		return sum;
-
-		//		Coeff* tmp1 = odds;
-//		while (tmp1)
-//		{
-//			Coeff* tmp2 = obj.odds;
-//			bool found = false;
-//			while (tmp2 and !found)
-//			{
-//				if (tmp1->degree == tmp2->degree)
-//				{
-//					sum.Set(tmp1->number + tmp2->number, tmp1->degree);
-//					found = true;
-//				}
-//				tmp2 = tmp2->pNext;
-//			}
-//			if (!found)
-//			{
-//				sum.Set(tmp1->number, tmp1->degree);
-//			}
-//			tmp1 = tmp1->pNext;
-//		}
-
-//		Coeff* tmp2 = obj.odds;
-//		while (tmp2)
-//		{
-//			tmp1 = sum.odds;
-//			bool found = false;
-//			while (tmp1 and !found)
-//			{
-//				if (tmp2->degree == tmp1->degree)
-//				{
-//					found = true;
-//				}
-//				tmp1 = tmp1->pNext;
-//			}
-//			if (!found)
-//			{
-//				sum.Set(tmp2->number, tmp2->degree);
-//			}
-//			tmp2 = tmp2->pNext;
-//		}
 
 	};
 
@@ -363,84 +242,8 @@ class Polynomial
 		}
 
 		return difference;
-
-		//		Coeff* tmp2 = obj.odds;
-//		while (tmp2)
-//		{
-//			tmp1 = odds;
-//			bool found = false;
-//			while (tmp1 and !found)
-//			{
-//				if (tmp2->degree == tmp1->degree)
-//				{
-//					found = true;
-//				}
-//				tmp1 = tmp1->pNext;
-//			}
-//			if (!found)
-//			{
-//				difference.Set(tmp2->number, tmp2->degree);
-//			}
-//			tmp2 = tmp2->pNext;
-//		}
-//	}
-//
-//
-//		return difference(0);
-
-
-//		Coeff* tmp1 = odds;
-//		if (obj.numberOfCoeff == 0)
-//		{
-//			while (tmp1)
-//			{
-//				difference.Set(tmp1->number, tmp1->degree);
-//				tmp1 = tmp1->pNext;
-//			}
-//		}
-//		else
-//		{
-//			while (tmp1)
-//			{
-//				Coeff* tmp2 = obj.odds;
-//				bool found = false;
-//				while (tmp2 and !found)
-//				{
-//					if (tmp1->degree == tmp2->degree)
-//					{
-//						if (tmp1->number - tmp2->number != 0)
-//						{
-//							difference.Set(tmp1->number - tmp2->number, tmp1->degree);
-//						}
-//						found = true;
-//					}
-//					tmp2 = tmp2->pNext;
-//				}
-//				if (!found)
-//				{
-//					difference.Set(tmp1->number * -1, tmp1->degree);
-//				}
-//				tmp1 = tmp1->pNext;
-//			}
 	}
 
-
-//	Polynomial<T>& operator=(const Polynomial<T>& right)
-//	{
-//		if (this == &right)
-//		{
-//			return *this;
-//		}
-//		delete[] odds;
-//		numberOfCoeff = right.numberOfCoeff;
-//		Coeff* tmp = right.odds;
-//		while (tmp)
-//		{
-//			Set(tmp->number, tmp->degree);
-//			tmp = tmp->pNext;
-//		}
-//		return *this;
-//	}
 
 	bool operator==(Polynomial<T>& right)
 	{
@@ -471,26 +274,6 @@ class Polynomial
 				}
 				i++;
 			}
-
-//			Coeff* tmp1 = odds;
-//			while (tmp1)
-//			{
-//				Coeff* tmp2 = right.odds;
-//				bool equal = false;
-//				while (tmp2)
-//				{
-//					if (tmp1->number == tmp2->number && tmp1->degree == tmp2->degree)
-//					{
-//						equal = true;
-//					}
-//					tmp2 = tmp2->pNext;
-//				}
-//				if (!equal)
-//				{
-//					return false;
-//				}
-//				tmp1 = tmp1->pNext;
-//			}
 		}
 		return true;
 	}
