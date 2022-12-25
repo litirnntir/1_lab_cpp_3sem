@@ -874,16 +874,16 @@ int main()
 				Polynomial<double> polynomials[SIZE];
 				mainMenu(polynomials);
 			}
-			else if (type == 4)
-			{
-				Polynomial<std::complex<float>> polynomials[SIZE];
-				mainMenuComplex(polynomials);
-			}
-			else if (type == 5)
-			{
-				Polynomial<std::complex<double>> polynomials[SIZE];
-				mainMenuComplex(polynomials);
-			}
+//			else if (type == 4)
+//			{
+//				Polynomial<std::complex<float>> polynomials[SIZE];
+//				mainMenuComplex(polynomials);
+//			}
+//			else if (type == 5)
+//			{
+//				Polynomial<std::complex<double>> polynomials[SIZE];
+//				mainMenuComplex(polynomials);
+//			}
 		}
 		catch (const char* err)
 		{
