@@ -174,7 +174,6 @@ class Polynomial
 			}
 		}
 
-
 		for (auto j = obj.begin(); j != obj.end(); ++j)
 		{
 			auto i = sum.begin();
@@ -243,7 +242,6 @@ class Polynomial
 
 		return difference;
 	}
-
 
 	bool operator==(Polynomial<T>& right)
 	{
@@ -329,60 +327,55 @@ template<class T>
 class Polynomial<std::complex<T>>
 {
  private:
+	template<typename T2>
 	class Coeff
 	{
 	 public:
-		Coeff* pNext;
-		std::complex<T> number;
+		std::complex<T2> number;
 		int degree;
 
-		Coeff(std::complex<T> number, int degree, Coeff* pNext = nullptr)
+		Coeff(std::complex<T> number, int degree)
 		{
 			this->number = number;
-			this->pNext = pNext;
 			this->degree = degree;
 		}
 	};
-	Coeff* odds;
+	std::list<Coeff<T>> odds;
 	int numberOfCoeff;
  public:
+
+	Polynomial(const Polynomial<std::complex<T>>& src) = default;
+	Polynomial<std::complex<T>>& operator=(const Polynomial<std::complex<T>>& src) = default;
+	~Polynomial() = default;
 
 	int GetNumberOfCoeff()
 	{
 		return numberOfCoeff;
 	}
 
+	auto begin()
+	{
+		return odds.begin();
+	}
+	auto end()
+	{
+		return odds.end();
+	}
+
 	void Set(const std::complex<T> data, const int degreeCoeff)
 	{
-		if (data.imag() == 0 && data.real() == 0) throw "Coefficient cannot be equal to zero";
+		if (data.real() == 0 && data.imag() == 0) throw "Coefficient cannot be equal to zero";
 		if (degreeCoeff < 0) throw "Degree cannot be less zero";
-		Coeff* node = new Coeff(data, degreeCoeff);
-		if (odds == nullptr)
+
+		for (auto i = begin(); i != end(); ++i)
 		{
-			odds = node;
-		}
-		else
-		{
-			Coeff* tmp = odds;
-			if (tmp->pNext != nullptr)
+			if (i->degree == degreeCoeff)
 			{
-				while (tmp->pNext)
-				{
-					if (degreeCoeff == tmp->degree)
-					{
-						tmp->number = data;
-						return;
-					}
-					tmp = tmp->pNext;
-				}
-			}
-			if (degreeCoeff == tmp->degree)
-			{
-				tmp->number = data;
+				i->number = data;
 				return;
 			}
-			tmp->pNext = node;
 		}
+		odds.push_back(Coeff<T>(data, degreeCoeff));
 		numberOfCoeff++;
 	}
 
@@ -390,7 +383,6 @@ class Polynomial<std::complex<T>>
 	{
 		numberOfCoeff = 0;
 		if (degree < 0) throw "Error";
-		odds = nullptr;
 
 		if (degree == 0) return;
 
@@ -401,34 +393,18 @@ class Polynomial<std::complex<T>>
 		}
 	}
 
-	Polynomial<std::complex<T>>(const Polynomial<std::complex<T>>& obj)
-	{
-		numberOfCoeff = obj.numberOfCoeff;
-		Coeff* tmp = obj.odds;
-		while (tmp)
-		{
-			Set(tmp->number, tmp->degree);
-			tmp = tmp->pNext;
-		}
-	}
-
-	~Polynomial<std::complex<T>>()
-	{
-		delete[] odds;
-	}
-
 	void PrintPolynomial()
 	{
-		Coeff* tmp = odds;
+
 		if (numberOfCoeff != 0)
 		{
-			while (tmp)
+			for (auto i = begin(); i != end(); ++i)
 			{
-				if (tmp->pNext) std::cout << tmp->number << "x^" << tmp->degree << " + ";
-				else std::cout << tmp->number << "x^" << tmp->degree << std::endl;
-				tmp = tmp->pNext;
+				if (i != std::prev(end())) std::cout << i->number << "x^" << i->degree << " + ";
+				else std::cout << i->number << "x^" << i->degree << std::endl;
 			}
 		}
+
 		else
 		{
 			std::cout << "All coefficients is 0" << std::endl;
@@ -437,51 +413,40 @@ class Polynomial<std::complex<T>>
 
 	std::complex<T> operator[](const int degree)
 	{
-		Coeff* tmp = this->odds;
-		while (tmp != nullptr)
+		for (auto i = begin(); i != end(); ++i)
 		{
-			if (degree == tmp->degree)
-			{
-				return tmp->number;
-			}
-			tmp = tmp->pNext;
+			if (i->degree == degree) return i->number;
 		}
 		return 0;
 	}
 
-	Polynomial<std::complex<T>> operator*(const std::complex<T> scalar)
+	Polynomial<std::complex<T>> operator*(std::complex<T> scalar)
 	{
 		Polynomial<std::complex<T>> result(0);
-		Coeff* tmp = odds;
-		for (int i = 0; i < numberOfCoeff; ++i)
+		for (auto i = begin(); i != end(); ++i)
 		{
-			result.Set((std::complex<T>)tmp->number * (std::complex<T>)scalar, tmp->degree);
-			tmp = tmp->pNext;
+			result.Set((std::complex<T>)i->number * (std::complex<T>)scalar, i->degree);
 		}
 		return result;
 	}
 
-	friend Polynomial<std::complex<T>> operator*(const std::complex<T> scalar, const Polynomial<std::complex<T>>& obj)
+	friend Polynomial<std::complex<T>> operator*(std::complex<T> scalar, Polynomial<std::complex<T>>& obj)
 	{
 		Polynomial<std::complex<T>> result(0);
-		Coeff* tmp = obj.odds;
-		for (int i = 0; i < obj.numberOfCoeff; ++i)
+		for (auto i = obj.begin(); i != obj.end(); ++i)
 		{
-			result.Set(tmp->number * (std::complex<T>)scalar, tmp->degree);
-			tmp = tmp->pNext;
+			result.Set((std::complex<T>)i->number * (std::complex<T>)scalar, i->degree);
 		}
 		return result;
 	}
 
 	std::complex<T> ValueCalculation(std::complex<T> x)
 	{
-		Coeff* tmp = odds;
 		std::complex<T> sum = std::complex<T>(0, 0);
-		while (tmp)
+		for (auto i = begin(); i != end(); ++i)
 		{
-			std::complex<T> powX = (std::complex<T>)std::pow(x, tmp->degree) * (std::complex<T>)tmp->number;
+			std::complex<T> powX = (std::complex<T>)std::pow(x, i->degree) * (std::complex<T>)i->number;
 			sum = sum + powX;
-			tmp = tmp->pNext;
 		}
 		return sum;
 	}
@@ -489,60 +454,53 @@ class Polynomial<std::complex<T>>
 	Polynomial<std::complex<T>> FindIntegral()
 	{
 		Polynomial<std::complex<T>> integral(0);
-		Coeff* tmp = odds;
-
-		while (tmp)
+		for (auto i = begin(); i != end(); ++i)
 		{
-			std::complex<T>
-				a = std::complex<T>(tmp->number.real() / (tmp->degree + 1), tmp->number.imag() / (tmp->degree + 1));
-			integral.Set(a, tmp->degree + 1);
-			tmp = tmp->pNext;
+			std::complex<T> a = std::complex<T>(i->number.real() / (i->degree + 1), i->number.imag() / (i->degree + 1));
+			integral.Set(a, i->degree + 1);
 		}
-
 		return integral;
 	}
 
 	Polynomial<std::complex<T>> operator+(Polynomial<std::complex<T>>& obj)
 	{
 		Polynomial<std::complex<T>> sum(0);
-		Coeff* tmp1 = odds;
-		while (tmp1)
+
+		for (auto i = begin(); i != end(); ++i)
 		{
-			Coeff* tmp2 = obj.odds;
 			bool found = false;
-			while (tmp2 and !found)
+			auto j = obj.begin();
+			while ((j != obj.end()) && !found)
 			{
-				if (tmp1->degree == tmp2->degree)
+				if (i->degree == j->degree)
 				{
-					sum.Set(tmp1->number + tmp2->number, tmp1->degree);
+					sum.Set(i->number + j->number, i->degree);
 					found = true;
 				}
-				tmp2 = tmp2->pNext;
+				j++;
 			}
 			if (!found)
 			{
-				sum.Set(tmp1->number, tmp1->degree);
+				sum.Set(i->number, i->degree);
 			}
-			tmp1 = tmp1->pNext;
 		}
-		Coeff* tmp2 = obj.odds;
-		while (tmp2)
+
+		for (auto j = obj.begin(); j != obj.end(); ++j)
 		{
-			tmp1 = sum.odds;
+			auto i = sum.begin();
 			bool found = false;
-			while (tmp1 and !found)
+			while ((i != sum.end()) && !found)
 			{
-				if (tmp2->degree == tmp1->degree)
+				if (j->degree == i->degree)
 				{
 					found = true;
 				}
-				tmp1 = tmp1->pNext;
+				i++;
 			}
 			if (!found)
 			{
-				sum.Set(tmp2->number, tmp2->degree);
+				sum.Set(j->number, j->degree);
 			}
-			tmp2 = tmp2->pNext;
 		}
 
 		return sum;
@@ -552,84 +510,52 @@ class Polynomial<std::complex<T>>
 	Polynomial<std::complex<T>> operator-(Polynomial<std::complex<T>>& obj)
 	{
 		Polynomial<std::complex<T>> difference(0);
-		Coeff* tmp1 = odds;
-		if (obj.numberOfCoeff == 0)
+
+		for (auto i = begin(); i != end(); ++i)
 		{
-			while (tmp1)
+			bool found = false;
+			auto j = obj.begin();
+			while ((j != obj.end()) && !found)
 			{
-				difference.Set(tmp1->number, tmp1->degree);
-				tmp1 = tmp1->pNext;
+				if (i->degree == j->degree)
+				{
+					if ((i->number - j->number).real() != 0 and (i->number - j->number).imag() != 0)
+					{
+						difference.Set(i->number - j->number, i->degree);
+					}
+					found = true;
+				}
+				j++;
+			}
+			if (!found)
+			{
+				std::complex<T> a = std::complex<T>(i->number.real() * -1, i->number.imag() * -1);
+				difference.Set(a, i->degree);
 			}
 		}
-		else
-		{
-			while (tmp1)
-			{
-				Coeff* tmp2 = obj.odds;
-				bool found = false;
-				while (tmp2 and !found)
-				{
-					if (tmp1->degree == tmp2->degree)
-					{
-						if ((tmp1->number - tmp2->number).real() != 0 and (tmp1->number - tmp2->number).imag() != 0)
-						{
-							difference.Set(tmp1->number - tmp2->number, tmp1->degree);
-						}
-						found = true;
-					}
-					tmp2 = tmp2->pNext;
-				}
-				if (!found)
-				{
-					std::complex<T> a = std::complex<T>(tmp1->number.real() * -1, tmp1->number.imag() * -1);
-					difference.Set(a, tmp1->degree);
-				}
-				tmp1 = tmp1->pNext;
-			}
 
-			Coeff* tmp2 = obj.odds;
-			while (tmp2)
+		for (auto j = obj.begin(); j != obj.end(); ++j)
+		{
+			auto i = this->begin();
+			bool found = false;
+			while ((i != difference.end()) && !found)
 			{
-				tmp1 = odds;
-				bool found = false;
-				while (tmp1 and !found)
+				if (j->degree == i->degree)
 				{
-					if (tmp2->degree == tmp1->degree)
-					{
-						found = true;
-					}
-					tmp1 = tmp1->pNext;
+					found = true;
 				}
-				if (!found)
-				{
-					difference.Set(tmp2->number, tmp2->degree);
-				}
-				tmp2 = tmp2->pNext;
+				i++;
+			}
+			if (!found)
+			{
+				difference.Set(j->number, j->degree);
 			}
 		}
 
 		return difference;
-
-	};
-
-	Polynomial<std::complex<T>>& operator=(const Polynomial<std::complex<T>>& right)
-	{
-		if (this == &right)
-		{
-			return *this;
-		}
-		delete[] odds;
-		numberOfCoeff = right.numberOfCoeff;
-		Coeff* tmp = right.odds;
-		while (tmp)
-		{
-			Set(tmp->number, tmp->degree);
-			tmp = tmp->pNext;
-		}
-		return *this;
 	}
 
-	bool operator==(const Polynomial<std::complex<T>>& right)
+	bool operator==(Polynomial<std::complex<T>>& right)
 	{
 		if (this == &right)
 		{
@@ -641,29 +567,28 @@ class Polynomial<std::complex<T>>
 		}
 		else
 		{
-			Coeff* tmp1 = odds;
-			while (tmp1)
+			for (auto i = begin(); i != end(); ++i)
 			{
-				Coeff* tmp2 = right.odds;
 				bool equal = false;
-				while (tmp2)
+				for (auto j = right.begin(); i != right.end(); ++i)
 				{
-					if (tmp1->number.real() == tmp2->number.real() && tmp1->number.imag() == tmp2->number.imag()
-						&& tmp1->degree == tmp2->degree)
+					if (i->number.real() == j->number.real() && i->number.imag() == j->number.imag()
+						&& i->degree == j->degree)
 					{
 						equal = true;
 					}
-					tmp2 = tmp2->pNext;
+					j++;
 				}
 				if (!equal)
 				{
 					return false;
 				}
-				tmp1 = tmp1->pNext;
+				i++;
 			}
 		}
 		return true;
 	}
+
 
 	bool operator>(Polynomial<std::complex<T>>& right)
 	{
